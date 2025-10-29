@@ -9,9 +9,6 @@
 
 ### 一键启动
 ```bash
-# Windows用户
-start-dev.bat
-
 # 或者手动启动
 docker-compose up -d
 ```

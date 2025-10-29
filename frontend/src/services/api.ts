@@ -1,5 +1,6 @@
 // API服务配置
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios from 'axios';
+import type { AxiosInstance, AxiosResponse } from 'axios';
 import type { ApiResponse, ApiError } from '@/types';
 
 class ApiService {

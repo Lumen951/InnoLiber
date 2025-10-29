@@ -38,34 +38,59 @@ InnoLiber/
 ## 快速开始
 
 ### 前置要求
-- Python 3.11+
-- Node.js 18+
-- PostgreSQL 16+
-- Docker（推荐）
+- **Anaconda/Miniconda**: Python环境管理（推荐）
+- **Node.js 18+**: 前端开发
+- **Docker Desktop**: 数据库服务
+- **NVIDIA GPU** (可选): CUDA 12.6+ 支持PyTorch加速
 
-### 环境配置
+### 方案一：一键启动（Windows推荐）
 
-1. 复制环境变量模板
-```bash
-cp .env.template .env
+直接运行启动脚本，会自动检查并配置环境：
+
+```cmd
+start-dev.bat
 ```
 
-2. 编辑 `.env` 文件，填写必要配置
+该脚本会自动完成：
+- ✅ 检查Conda环境
+- ✅ 创建Python虚拟环境（如果不存在）
+- ✅ 检查GPU和CUDA环境
+- ✅ 启动Docker数据库服务
 
-3. 启动开发环境
+### 方案二：手动配置
+
+#### 1. 创建Conda环境
+
 ```bash
-docker-compose up -d
+# 使用预配置的environment.yml创建环境
+conda env create -f environment.yml
+
+# 激活环境
+conda activate innoliber
 ```
 
-### 后端开发
+#### 2. 验证PyTorch CUDA支持（如有GPU）
+
+```bash
+python -c "import torch; print(f'PyTorch: {torch.__version__}'); print(f'CUDA可用: {torch.cuda.is_available()}')"
+```
+
+#### 3. 启动数据库服务
+
+```bash
+# 使用本地开发配置（仅数据库服务）
+docker-compose -f docker-compose.local-dev.yml up -d
+```
+
+#### 4. 启动后端服务
 
 ```bash
 cd backend
 poetry install
-poetry run uvicorn app.main:app --reload
+poetry run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### 前端开发
+#### 5. 启动前端服务（新终端）
 
 ```bash
 cd frontend
@@ -73,13 +98,43 @@ npm install
 npm run dev
 ```
 
+### 访问地址
+
+- 前端应用: http://localhost:5173
+- 后端API: http://localhost:8000
+- API文档: http://localhost:8000/docs
+- pgAdmin: http://localhost:5050
+
+### 环境配置
+
+复制并编辑环境变量文件：
+
+```bash
+# Windows
+copy .env.template .env
+
+# Linux/macOS
+cp .env.template .env
+```
+
+### 详细配置指南
+
+完整的环境配置、故障排除和跨平台说明，请查看：
+- **[Conda开发环境配置指南](docs/development/conda_setup.md)** 🔥 推荐阅读
+
 ## 文档
 
+### 开发指南
+- **[Conda开发环境配置](docs/development/conda_setup.md)** - 完整的环境配置指南（推荐）
+- [代码规范](docs/development/coding_standards.md)
+
+### 技术文档
 - [开发计划](docs/technical/00_development_plan.md)
 - [技术栈选型](docs/technical/01_tech_stack.md)
 - [数据库设计](docs/technical/02_database_design.md)
 - [API规范](docs/technical/03_api_specification.md)
-- [代码规范](docs/development/coding_standards.md)
+
+### 设计文档
 - [前端设计](docs/design/frontend_prototypes.md)
 
 ## 开发状态
