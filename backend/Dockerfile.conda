@@ -1,0 +1,67 @@
+# =============================================================================
+# Multi-stage Dockerfile for InnoLiber Backend (FastAPI + PyTorch)
+# =============================================================================
+# CONDA VERSION - Uses environment.yml (matches your development environment)
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Stage 1: Builder - Install dependencies with Conda
+# -----------------------------------------------------------------------------
+FROM continuumio/miniconda3:latest AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Copy conda environment file
+COPY environment.yml .
+
+# Create conda environment
+# --name app: environment name
+# --file environment.yml: use environment file
+RUN conda env create --name app --file environment.yml && \
+    conda clean -afy
+
+# Initialize conda for bash
+RUN conda init bash
+
+# -----------------------------------------------------------------------------
+# Stage 2: Runtime
+# -----------------------------------------------------------------------------
+FROM continuumio/miniconda3:latest AS runtime
+
+# Install runtime system dependencies
+RUN apt-get update && apt-get install -y \
+    libpq5 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create non-root user for security
+RUN useradd -m -u 1000 appuser && \
+    mkdir -p /app && \
+    chown -R appuser:appuser /app
+
+WORKDIR /app
+
+# Copy conda environment from builder
+COPY --from=builder /opt/conda/envs/app /opt/conda/envs/app
+
+# Add conda environment to PATH
+ENV PATH=/opt/conda/envs/app/bin:$PATH
+ENV CONDA_DEFAULT_ENV=app
+
+# Copy application code
+COPY --chown=appuser:appuser ./backend/app ./app
+
+# Switch to non-root user
+USER appuser
+
+# Expose application port
+EXPOSE 8000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD python -c "import requests; requests.get('http://localhost:8000/health', timeout=2)" || exit 1
+
+# Activate conda environment and run application
+# Using conda run ensures environment activation
+CMD ["conda", "run", "--no-capture-output", "-n", "app", \
+     "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers"]

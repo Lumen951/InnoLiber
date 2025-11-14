@@ -1,0 +1,150 @@
+# =============================================================================
+# Docker Compose Configuration for InnoLiber - Production Environment
+# =============================================================================
+# Optimized for production deployment with security and performance settings
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+# =============================================================================
+
+version: '3.8'
+
+services:
+  # ---------------------------------------------------------------------------
+  # PostgreSQL - Production Configuration
+  # ---------------------------------------------------------------------------
+  postgres:
+    environment:
+      # Production should use proper authentication
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+    volumes:
+      # Remove init script mount in production (use migrations)
+      - postgres_data:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+
+  # ---------------------------------------------------------------------------
+  # Redis - Production Configuration
+  # ---------------------------------------------------------------------------
+  redis:
+    command: >
+      redis-server
+      --appendonly yes
+      --requirepass ${REDIS_PASSWORD:-}
+      --maxmemory 1gb
+      --maxmemory-policy allkeys-lru
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+  # ---------------------------------------------------------------------------
+  # Backend - Production Configuration
+  # ---------------------------------------------------------------------------
+  backend:
+    build:
+      args:
+        - BUILD_ENV=production
+    command: >
+      uvicorn app.main:app
+      --host 0.0.0.0
+      --port 8000
+      --workers 4
+      --proxy-headers
+      --forwarded-allow-ips='*'
+      --no-access-log
+    environment:
+      # Redis with password
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      # Production settings
+      ENVIRONMENT: production
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    volumes:
+      # Remove source code mount (use built code only)
+      - backend_uploads:/app/uploads
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+  # ---------------------------------------------------------------------------
+  # Celery Worker - Production Configuration
+  # ---------------------------------------------------------------------------
+  celery-worker:
+    command: >
+      celery -A app.celery worker
+      --loglevel=warning
+      --concurrency=4
+      --max-tasks-per-child=1000
+    environment:
+      # Redis with password
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      # Celery with password
+      CELERY_BROKER_URL: redis://:${REDIS_PASSWORD:-}@redis:6379/1
+      CELERY_RESULT_BACKEND: redis://:${REDIS_PASSWORD:-}@redis:6379/2
+      # Production settings
+      ENVIRONMENT: production
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    volumes:
+      # Remove source code mount
+      - backend_uploads:/app/uploads
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+
+  # ---------------------------------------------------------------------------
+  # Frontend - Production Configuration
+  # ---------------------------------------------------------------------------
+  frontend:
+    environment:
+      - VITE_API_URL=${VITE_API_URL}
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # ---------------------------------------------------------------------------
+  # pgAdmin - Disable in Production (or restrict access)
+  # ---------------------------------------------------------------------------
+  pgadmin:
+    profiles:
+      - debug
+    # Only start when explicitly requested with --profile debug
+
+# =============================================================================
+# Production Volumes
+# =============================================================================
+volumes:
+  backend_uploads:
+    driver: local

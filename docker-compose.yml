@@ -1,34 +1,44 @@
-version: '3.8'
+# =============================================================================
+# Docker Compose Configuration for InnoLiber - Development Environment
+# =============================================================================
+# Services: PostgreSQL, Redis, Backend API, Celery Worker, Frontend, pgAdmin
+# =============================================================================
 
 services:
-  # PostgreSQL数据库
+  # ---------------------------------------------------------------------------
+  # PostgreSQL Database with pgvector extension
+  # ---------------------------------------------------------------------------
   postgres:
     image: pgvector/pgvector:pg16
-    container_name: innolibr_postgres
+    container_name: innoliber_postgres
     environment:
-      POSTGRES_DB: innolibr
-      POSTGRES_USER: innolibr
-      POSTGRES_PASSWORD: innolibr_dev_password
+      POSTGRES_DB: ${POSTGRES_DB:-innoliber}
+      POSTGRES_USER: ${POSTGRES_USER:-innoliber}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-innoliber_dev_password}
       POSTGRES_HOST_AUTH_METHOD: trust
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./tools/scripts/init_db.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./tools/scripts/init_db.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U innolibr"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-innoliber}"]
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
-      - innolibr_network
+      - innoliber_network
+    restart: unless-stopped
 
-  # Redis缓存（可选）
+  # ---------------------------------------------------------------------------
+  # Redis Cache & Message Broker
+  # ---------------------------------------------------------------------------
   redis:
     image: redis:7-alpine
-    container_name: innolibr_redis
+    container_name: innoliber_redis
+    command: redis-server --appendonly yes
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT:-6379}:6379"
     volumes:
       - redis_data:/data
     healthcheck:
@@ -37,25 +47,138 @@ services:
       timeout: 3s
       retries: 5
     networks:
-      - innolibr_network
+      - innoliber_network
+    restart: unless-stopped
 
-  # pgAdmin（数据库管理工具，可选）
+  # ---------------------------------------------------------------------------
+  # Backend API (FastAPI + PyTorch)
+  # ---------------------------------------------------------------------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile  # Use Poetry version
+    container_name: innoliber_backend
+    environment:
+      # Database
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-innoliber}:${POSTGRES_PASSWORD:-innoliber_dev_password}@postgres:5432/${POSTGRES_DB:-innoliber}
+      # Redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DB: ${REDIS_DB:-0}
+      # Celery
+      CELERY_BROKER_URL: redis://redis:6379/1
+      CELERY_RESULT_BACKEND: redis://redis:6379/2
+      # API Keys
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      # JWT
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-dev_secret_key_change_in_production}
+      JWT_ALGORITHM: ${JWT_ALGORITHM:-HS256}
+      JWT_ACCESS_TOKEN_EXPIRE_MINUTES: ${JWT_ACCESS_TOKEN_EXPIRE_MINUTES:-30}
+      # CORS
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000,http://localhost}
+      # Environment
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    volumes:
+      # Mount source code for hot reload in development
+      - ./backend/app:/app/app:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health', timeout=2)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - innoliber_network
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # Celery Worker (Background Tasks)
+  # ---------------------------------------------------------------------------
+  celery-worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile  # Use Poetry version
+    container_name: innoliber_celery_worker
+    command: celery -A app.celery worker --loglevel=info
+    environment:
+      # Database
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-innoliber}:${POSTGRES_PASSWORD:-innoliber_dev_password}@postgres:5432/${POSTGRES_DB:-innoliber}
+      # Redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      # Celery
+      CELERY_BROKER_URL: redis://redis:6379/1
+      CELERY_RESULT_BACKEND: redis://redis:6379/2
+      # API Keys
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      # Environment
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+    volumes:
+      # Mount source code for hot reload in development
+      - ./backend/app:/app/app:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - innoliber_network
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # Frontend (React + Vite served by Nginx)
+  # ---------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: innoliber_frontend
+    environment:
+      - VITE_API_URL=${VITE_API_URL:-http://localhost:8000}
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    networks:
+      - innoliber_network
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # pgAdmin (Database Management Tool)
+  # ---------------------------------------------------------------------------
   pgadmin:
     image: dpage/pgadmin4:latest
-    container_name: innolibr_pgadmin
+    container_name: innoliber_pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@innolibr.com
-      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@innoliber.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     ports:
-      - "5050:80"
+      - "${PGADMIN_PORT:-5050}:80"
     volumes:
       - pgadmin_data:/var/lib/pgadmin
     depends_on:
       - postgres
     networks:
-      - innolibr_network
+      - innoliber_network
+    restart: unless-stopped
 
+# =============================================================================
+# Volumes
+# =============================================================================
 volumes:
   postgres_data:
     driver: local
@@ -64,6 +187,9 @@ volumes:
   pgadmin_data:
     driver: local
 
+# =============================================================================
+# Networks
+# =============================================================================
 networks:
-  innolibr_network:
+  innoliber_network:
     driver: bridge
