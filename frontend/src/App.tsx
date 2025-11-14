@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import ProposalCreatePage from './pages/ProposalCreatePage';
 import { initAuth } from './store/authStore';
 
 function App() {
@@ -23,9 +24,12 @@ function App() {
       {/* 首页 */}
       <Route path="/dashboard" element={<Dashboard />} />
 
-      {/* TODO: 添加其他路由 */}
-      <Route path="/proposals/new" element={<div>新建标书页面 - 开发中</div>} />
+      {/* 标书相关页面 */}
+      <Route path="/proposals/new" element={<ProposalCreatePage />} />
+      <Route path="/proposals/:id/edit" element={<div>标书编辑页面 - 开发中</div>} />
       <Route path="/proposals/:id" element={<div>标书详情页面 - 开发中</div>} />
+
+      {/* TODO: 其他页面 */}
       <Route path="/analysis" element={<div>数据分析页面 - 开发中</div>} />
       <Route path="/library" element={<div>文献库页面 - 开发中</div>} />
       <Route path="/settings" element={<div>设置页面 - 开发中</div>} />
