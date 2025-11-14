@@ -161,7 +161,7 @@ npm run dev
 | pgAdmin | http://localhost:5050 | 数据库管理工具 |
 
 ### pgAdmin登录信息
-- Email: `admin@innolibr.com`
+- Email: `admin@innoliber.com`
 - Password: `admin`
 
 ---
@@ -396,7 +396,7 @@ cp .env.template .env
 
 ```env
 # 数据库配置
-DATABASE_URL=postgresql+asyncpg://innolibr:innolibr_dev_password@localhost:5432/innolibr
+DATABASE_URL=postgresql+asyncpg://innoliber:innoliber_dev_password@localhost:5432/innoliber
 
 # Redis配置
 REDIS_HOST=localhost

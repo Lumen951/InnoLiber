@@ -311,7 +311,7 @@ const [proposals, setProposals] = useState<Proposal[]>([]);
 const handleSubmit = () => { ... }
 
 // 常量：全大写，下划线分隔
-const API_BASE_URL = 'https://api.innolibr.com';
+const API_BASE_URL = 'https://api.innoliber.com';
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 // 接口/类型：大驼峰，添加I或T前缀（可选）

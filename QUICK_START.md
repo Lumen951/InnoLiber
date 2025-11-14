@@ -24,7 +24,8 @@ docker-compose up -d
 ```bash
 cd backend
 poetry install
-poetry run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+
+
 ```
 
 ### 3. 启动前端服务
@@ -39,16 +40,16 @@ npm run dev
 - **后端API**: http://localhost:8000
 - **API文档**: http://localhost:8000/docs
 - **pgAdmin**: http://localhost:5050
-  - 用户名: admin@innolibr.com
+  - 用户名: admin@innoliber.com
   - 密码: admin
 
 ## 🗄️ 数据库连接信息
 
 - **主机**: localhost
 - **端口**: 5432
-- **数据库**: innolibr
-- **用户名**: innolibr
-- **密码**: innolibr_dev_password
+- **数据库**: innoliber
+- **用户名**: innoliber
+- **密码**: innoliber_dev_password
 
 ## 📝 开发状态
 

@@ -575,8 +575,8 @@ target_metadata = Base.metadata
 -- seeds/001_initial_users.sql
 INSERT INTO users (email, username, password_hash, role)
 VALUES
-    ('admin@innolibr.com', 'admin', '$2b$12$...', 'admin'),
-    ('demo@innolibr.com', 'demo_user', '$2b$12$...', 'ecr');
+    ('admin@innoliber.com', 'admin', '$2b$12$...', 'admin'),
+    ('demo@innoliber.com', 'demo_user', '$2b$12$...', 'ecr');
 ```
 
 ---
@@ -628,7 +628,7 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 ### 备份策略
 ```bash
 # 每日全量备份
-pg_dump -Fc innolibr > backup_$(date +%Y%m%d).dump
+pg_dump -Fc innoliber > backup_$(date +%Y%m%d).dump
 
 # 每小时增量备份（WAL归档）
 archive_command = 'cp %p /backup/wal_archive/%f'

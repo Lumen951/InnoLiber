@@ -1,8 +1,8 @@
 # InnoLiber 技术开发计划文档
 
-**版本**: v1.0
+**版本**: v1.2
 **创建日期**: 2025-10-28
-**更新日期**: 2025-10-29
+**更新日期**: 2025-11-12
 **状态**: 执行中
 
 ---
@@ -40,7 +40,7 @@
 | **LLM调用** | OpenAI SDK | 1.68+ | ✅ 确认 |
 | **依赖管理** | Poetry | 最新版 | ✅ 确认 |
 
-### 前端技术栈（已确认）
+### 前端技术栈（已确认 + 扩展）
 | 组件 | 选定技术 | 版本 | 确认状态 |
 |------|---------|------|---------|
 | **框架** | React | 18+ | ✅ 确认 |
@@ -49,6 +49,9 @@
 | **构建工具** | Vite | 5+ | ✅ 确认 |
 | **状态管理** | Zustand | 4+ | ✅ 确认 |
 | **表单处理** | React Hook Form + Zod | 最新版 | ✅ 确认 |
+| **富文本编辑器** | Quill.js (react-quill) | 2.0+ | ✅ 确认 |
+| **图表库** | Recharts | 2.13+ | ✅ 确认 |
+| **工具库** | lodash | 4.17+ | ✅ 确认 |
 | **包管理** | npm/yarn | 最新版 | ✅ 确认 |
 
 ### 基础设施（已确认）
@@ -115,6 +118,8 @@ InnoLiber/
 ### 阶段0：基础设施搭建（2-3天）✅ 已完成
 **目标**: 完成项目骨架和核心文档
 
+**完成日期**: 2025-10-29
+
 **已完成任务**:
 - [x] 技术栈调研与确认
 - [x] 项目架构设计
@@ -175,68 +180,443 @@ InnoLiber/
 6. **文档体系**
    - 快速启动指南: `QUICK_START.md`
    - 前端设计方案: `docs/design/frontend_prototypes.md`
+   - **完整页面设计**: `docs/design/frontend_pages_complete.md`
+   - **响应式设计指南**: `docs/design/responsive_design_guide.md`
+   - **组件开发规范**: `docs/design/component_development_standards.md`
    - 图标需求清单: `docs/design/icon_requirements.md`
    - 开发计划: `docs/technical/00_development_plan.md`
    - 技术栈文档: `docs/technical/01_tech_stack.md`
    - 数据库设计: `docs/technical/02_database_design.md`
    - API规范: `docs/technical/03_api_specification.md`
 
-### 阶段1：后端API实现（3-5天）🔄 进行中
-**目标**: 实现完整的后端API服务，连接前后端
+---
 
-**当前进度**: 数据库模型已完成，正在进行API端点开发
+### 阶段0.5：前端设计系统完善（1天）✅ 已完成
+**目标**: 创建完整的前端页面设计和开发规范
 
-**已完成**:
-- [x] User和Proposal数据库模型定义
+**完成日期**: 2025-10-30
 
-**进行中**:
-- [ ] 配置Alembic数据库迁移工具
-- [ ] 生成并执行初始数据库迁移
-- [ ] 实现JWT认证系统
-- [ ] 实现用户认证API端点
-- [ ] 实现标书CRUD API端点
-- [ ] 实现统计信息API端点
-- [ ] 创建种子数据用于开发测试
+**已完成任务**:
+- [x] 7个核心页面完整设计（UTF-8字符原型）
+- [x] 桌面端和移动端双版本设计
+- [x] 响应式设计指南文档
+- [x] 组件开发规范文档
+- [x] 技术选型确认（Quill.js + Recharts）
+- [x] 移动端适配策略制定
+- [x] 更新项目文档（CLAUDE.md, README.md）
 
-**计划任务详情**:
+**设计成果清单**:
 
-1. **数据库迁移配置**
-   - 安装并初始化Alembic
-   - 配置数据库连接
-   - 生成初始迁移脚本
-   - 执行数据库Schema创建
+1. **完整页面设计** (`docs/design/frontend_pages_complete.md`)
+   - 登录页（桌面端 + 移动端）
+   - 注册页（桌面端 + 移动端）
+   - 新建标书页（桌面端 + 移动端）
+   - 标书编辑页（桌面端 + 移动端） - 最复杂
+   - 标书详情页（桌面端 + 移动端）
+   - 数据分析页（桌面端 + 移动端）
+   - 文献库页（桌面端 + 移动端）
+   - 设置页（桌面端 + 移动端）
 
-2. **用户认证系统**
-   - JWT令牌生成和验证
-   - 密码哈希和验证（bcrypt）
-   - 认证中间件实现
-   - API端点:
-     - `POST /api/auth/register` - 用户注册
-     - `POST /api/auth/login` - 用户登录
-     - `POST /api/auth/refresh` - 刷新令牌
-     - `GET /api/auth/me` - 获取当前用户信息
+2. **响应式设计指南** (`docs/design/responsive_design_guide.md`)
+   - Ant Design Grid系统使用
+   - 断点系统定义和使用策略
+   - useBreakpoint Hook实践
+   - 移动端优化（触摸目标、字体、间距）
+   - 导航模式适配
+   - 表单、表格、编辑器适配策略
+   - 实用响应式Hook和工具
+   - 响应式检查清单
 
-3. **标书管理API**
-   - `GET /api/proposals` - 获取标书列表（支持分页、筛选、搜索）
-   - `GET /api/proposals/{id}` - 获取标书详情
-   - `POST /api/proposals` - 创建新标书
-   - `PUT /api/proposals/{id}` - 更新标书
-   - `DELETE /api/proposals/{id}` - 删除标书
-   - `GET /api/statistics` - 获取用户统计信息
+3. **组件开发规范** (`docs/design/component_development_standards.md`)
+   - 目录结构规范
+   - 组件开发流程
+   - 命名规范（文件、组件、变量）
+   - TypeScript类型规范
+   - 样式编写规范（CSS Modules推荐）
+   - 可访问性（ARIA）规范
+   - 状态管理规范
+   - 测试规范
+   - 性能优化建议
 
-4. **数据填充**
-   - 创建测试用户数据
-   - 创建示例标书数据（各种状态）
-   - 数据填充脚本
+4. **技术选型文档**
+   - 富文本编辑器: Quill.js (轻量、易集成)
+   - 图表库: Recharts (React原生、声明式)
+   - 响应式方案: Ant Design Grid + useBreakpoint
+   - 无需额外依赖包
 
-**技术实现要点**:
-- 使用SQLAlchemy异步ORM
-- Pydantic进行数据验证
-- 统一错误处理和响应格式
-- API速率限制
-- CORS配置
+---
 
-**预计完成日期**: 2025-11-01
+### 阶段0.5：Docker容器化部署（2天）✅ 已完成
+**目标**: 完成生产级Docker配置和部署方案
+
+**完成日期**: 2025-11-14
+
+**已完成任务**:
+- [x] Backend Dockerfile创建（Poetry版本）
+- [x] Backend Dockerfile.conda创建（Conda版本）
+- [x] Frontend Dockerfile创建（多阶段构建 + Nginx）
+- [x] docker-compose.yml完整重写（开发环境）
+- [x] docker-compose.prod.yml创建（生产环境）
+- [x] Alembic数据库迁移配置（alembic.ini + migrations/）
+- [x] 环境变量模板创建（.env.example）
+- [x] .dockerignore文件创建（backend + frontend）
+- [x] Nginx配置文件创建（frontend/nginx.conf）
+- [x] Docker部署文档编写（04_dockerfile_implementation_plan.md）
+- [x] 部署指南文档编写（05_docker_deployment_guide.md）
+- [x] Dockerfile对比说明（DOCKERFILE_COMPARISON.md）
+
+**技术成果清单**:
+
+1. **Backend容器化**
+   - 多阶段构建优化 (Builder + Runtime)
+   - Poetry依赖管理集成
+   - Conda环境备选方案
+   - 非root用户运行 (appuser)
+   - 健康检查配置
+   - 最终镜像约2GB（含PyTorch）
+
+2. **Frontend容器化**
+   - Vite生产构建优化
+   - Nginx静态文件服务
+   - SPA路由支持 (try_files)
+   - Gzip压缩配置
+   - 最终镜像约50MB
+
+3. **Docker Compose完整编排**
+   - PostgreSQL 16 + pgvector
+   - Redis 7 (缓存 + 消息队列)
+   - Backend API服务
+   - Celery Worker服务
+   - Frontend Nginx服务
+   - pgAdmin管理工具
+   - 网络隔离和依赖管理
+
+4. **数据库迁移系统**
+   - Alembic配置完成
+   - 迁移脚本目录结构
+   - 版本控制准备就绪
+
+5. **部署文档体系**
+   - 实施计划文档（依赖分析、31任务清单）
+   - 部署指南（快速启动、故障排查、性能调优）
+   - Dockerfile对比说明（Poetry vs Conda）
+
+**待完成项**:
+- [ ] 完整集成测试（docker-compose up验证）
+- [ ] 镜像构建性能优化
+- [ ] CI/CD流程集成
+
+---
+
+### 阶段1：前端核心页面开发（5-7天）🔄 40%完成
+**目标**: 完成7个核心页面的实现和响应式适配
+
+**任务清单**:
+
+#### 第一优先级 - 核心流程（3天）
+- [x] **登录/注册页实现**（1天）✅ 已完成 (2025-11-11)
+  - 左右分栏布局（桌面端）
+  - 单列布局（移动端）
+  - React Hook Form + Zod表单验证
+  - authStore状态管理
+  - JWT认证集成
+  - 教育邮箱格式检测（前端提示）
+  - 密码强度指示器
+  - **MVP范围**: 基础登录/注册功能，暂不发送验证邮件
+  - **代码预留**: 使用TODO-ALIYUN标记未来扩展功能
+
+- [ ] **新建标书页实现**（0.5天）
+  - 表单分组设计
+  - 下拉选择器集成
+  - AI辅助生成摘要功能
+  - 表单验证和提交
+
+- [ ] **标书编辑页实现**（2天）- 最复杂
+  - Quill.js富文本编辑器集成
+  - 三栏布局（桌面端）：章节导航 + 编辑器 + AI助手
+  - 标签页布局（移动端）：编辑 / 建议 / 质量
+  - 实时自动保存（debounce 2秒）
+  - 章节进度计算
+  - AI优化和建议功能UI
+  - 质量评分实时显示
+
+#### 第二优先级 - 详情与分析（2天）
+- [ ] **标书详情页实现**（0.5天）
+  - 信息展示卡片
+  - 质量评分可视化
+  - 标签页：基本信息 / 完整内容 / 参考文献 / 审阅记录
+  - 操作历史时间线
+
+- [ ] **数据分析页实现**（1天）
+  - Recharts图表集成
+  - 趋势分析结果展示
+  - 热门研究方向列表
+  - 推荐文献卡片
+  - 研究空白识别
+
+- [ ] **文献库页实现**（0.5天）
+  - 文献列表展示
+  - 搜索和筛选功能
+  - 文献卡片设计
+  - 添加到标书功能
+
+#### 第三优先级 - 设置（0.5天）
+- [ ] **设置页实现**（0.5天）
+  - 个人信息编辑
+  - 偏好设置（语言、主题、时区）
+  - 通知设置
+  - 安全设置（修改密码、双因素认证）
+
+#### 响应式适配验证（1天）
+- [ ] 所有页面xs断点测试（< 576px）
+- [ ] 所有页面md断点测试（768-991px）
+- [ ] 所有页面xl断点测试（≥ 1200px）
+- [ ] 触摸目标尺寸验证（≥ 44px）
+- [ ] 移动端导航测试
+- [ ] 表单、表格、编辑器移动端测试
+
+**技术关键点**:
+- React Hook Form + Zod表单验证
+- Quill.js富文本编辑器集成
+- Recharts图表集成
+- Ant Design响应式Grid布局
+- useBreakpoint条件渲染
+- Drawer抽屉导航（移动端）
+- 自动保存机制（lodash debounce）
+
+**预计完成时间**: 2025-11-06
+
+---
+
+### 阶段2：后端API实现与数据库迁移（5-7天）🔄 开始执行
+**目标**: 实现完整的后端API服务、数据库迁移系统、完善的测试用例和云端部署方案
+
+**制定日期**: 2025-11-12
+**执行状态**: 计划制定完成，等待执行确认
+
+---
+
+## Phase 1: 数据库迁移配置（0.5天）
+
+#### 1.1 Alembic初始化
+- [ ] 在backend目录下运行 `poetry run alembic init alembic`
+- [ ] 配置 `alembic.ini` 中的数据库连接字符串
+- [ ] 修改 `alembic/env.py` 设置target_metadata
+- [ ] 导入所有模型到 `alembic/env.py` 中
+
+#### 1.2 User模型扩展
+- [ ] 在 `backend/app/models/user.py` 添加 email_verified 字段
+- [ ] 添加 is_edu_email 字段
+- [ ] 添加 verify_token 字段（预留）
+- [ ] 添加 verify_token_expires 字段（预留）
+- [ ] 添加 research_field 字段
+- [ ] 添加 failed_login_attempts 字段（预留）
+- [ ] 添加 locked_until 字段（预留）
+
+#### 1.3 生成并执行迁移
+- [ ] 运行 `poetry run alembic revision --autogenerate -m "Initial database schema"`
+- [ ] 运行 `poetry run alembic upgrade head` 执行迁移
+- [ ] 验证数据库表创建成功
+- [ ] 验证所有字段和索引创建正确
+- [ ] 验证外键约束正常工作
+
+---
+
+## Phase 2: 认证系统实现（1.5天）
+
+#### 2.1 核心安全模块
+- [ ] 创建 `backend/app/core/security.py` 文件
+- [ ] 实现 get_password_hash 函数
+- [ ] 实现 verify_password 函数
+- [ ] 实现 create_access_token 函数
+- [ ] 实现 verify_token 函数
+- [ ] 实现 is_edu_email 函数
+
+#### 2.2 数据库会话管理
+- [ ] 创建 `backend/app/db/session.py` 文件
+- [ ] 配置异步数据库引擎
+- [ ] 创建 AsyncSessionLocal 工厂
+- [ ] 实现 get_db 依赖注入函数
+
+#### 2.3 FastAPI依赖注入
+- [ ] 创建 `backend/app/core/dependencies.py` 文件
+- [ ] 实现 oauth2_scheme 依赖
+- [ ] 实现 get_current_user 函数
+- [ ] 实现 get_current_active_user 函数
+
+#### 2.4 Pydantic Schema
+- [ ] 创建 `backend/app/schemas/auth.py` 文件
+- [ ] 定义 UserRegister model
+- [ ] 定义 UserLogin model
+- [ ] 定义 Token model
+- [ ] 定义 UserResponse model
+- [ ] 添加表单验证规则
+
+#### 2.5 认证API路由
+- [ ] 创建 `backend/app/api/v1/auth.py` 文件
+- [ ] 实现注册端点：POST /api/v1/auth/register
+- [ ] 实现登录端点：POST /api/v1/auth/login
+- [ ] 实现获取当前用户：GET /api/v1/auth/me
+- [ ] 添加错误处理和HTTP状态码
+- [ ] 添加 TODO-ALIYUN 标记预留功能
+
+#### 2.6 集成到主应用
+- [ ] 修改 `backend/app/main.py` 导入认证路由
+- [ ] 注册认证路由到FastAPI应用
+- [ ] 配置CORS中间件
+- [ ] 测试应用启动正常
+
+---
+
+## Phase 3: 标书CRUD API（1天）
+
+#### 3.1 Proposal Schema定义
+- [ ] 创建 `backend/app/schemas/proposal.py` 文件
+- [ ] 定义 ProposalCreate model
+- [ ] 定义 ProposalUpdate model
+- [ ] 定义 ProposalResponse model
+- [ ] 定义 ProposalDetail model
+
+#### 3.2 Proposal API路由
+- [ ] 创建 `backend/app/api/v1/proposals.py` 文件
+- [ ] 实现列表端点：GET /api/v1/proposals
+- [ ] 实现详情端点：GET /api/v1/proposals/{id}
+- [ ] 实现创建端点：POST /api/v1/proposals
+- [ ] 实现更新端点：PUT /api/v1/proposals/{id}
+- [ ] 实现删除端点：DELETE /api/v1/proposals/{id}
+
+#### 3.3 高级功能
+- [ ] 添加分页支持（skip, limit参数）
+- [ ] 添加状态筛选功能
+- [ ] 添加标题搜索功能
+- [ ] 添加权限检查（只能操作自己的标书）
+- [ ] 实现统计端点：GET /api/v1/proposals/statistics/summary
+
+#### 3.4 路由集成
+- [ ] 修改 `backend/app/main.py` 导入proposals路由
+- [ ] 注册proposals路由到FastAPI应用
+- [ ] 测试所有API端点正常响应
+
+---
+
+## Phase 4: 种子数据和测试（1天）
+
+#### 4.1 种子数据脚本
+- [ ] 创建 `backend/scripts/seed_data.py` 文件
+- [ ] 实现种子数据生成逻辑
+- [ ] 创建2-3个测试用户
+- [ ] 创建5-8个测试标书（不同状态）
+- [ ] 添加脚本运行说明
+
+#### 4.2 测试环境配置
+- [ ] 创建 `backend/tests/conftest.py` 文件
+- [ ] 配置测试数据库URL
+- [ ] 创建异步测试引擎
+- [ ] 创建测试会话fixture
+- [ ] 创建应用依赖覆盖fixture
+
+#### 4.3 认证功能测试
+- [ ] 创建 `backend/tests/test_auth.py` 文件
+- [ ] 编写注册成功测试用例
+- [ ] 编写重复邮箱注册失败测试用例
+- [ ] 编写登录成功测试用例
+- [ ] 编写密码错误测试用例
+- [ ] 编写JWT验证测试用例
+
+#### 4.4 标书功能测试
+- [ ] 创建 `backend/tests/test_proposals.py` 文件
+- [ ] 编写创建标书测试用例
+- [ ] 编写获取标书列表测试用例
+- [ ] 编写获取标书详情测试用例
+- [ ] 编写更新标书测试用例
+- [ ] 编写删除标书测试用例
+- [ ] 编写权限检查测试用例
+
+#### 4.5 测试执行和验证
+- [ ] 运行测试：`poetry run pytest tests/ -v`
+- [ ] 检查测试覆盖率：`poetry run pytest --cov=app`
+- [ ] 确保测试覆盖率 ≥ 70%
+- [ ] 修复所有失败的测试用例
+- [ ] 生成HTML覆盖率报告
+
+---
+
+## Phase 5: 部署准备（1天）
+
+#### 5.1 部署文档
+- [ ] 创建 `docs/deployment/aliyun_deployment_guide.md`
+- [ ] 创建 `docs/deployment/database_migration.md`
+- [ ] 创建 `docs/deployment/environment_setup.md`
+- [ ] 创建 `docs/deployment/docker_production.md`
+- [ ] 编写详细的部署步骤说明
+
+#### 5.2 部署脚本
+- [ ] 创建 `tools/scripts/deploy_to_aliyun.sh`
+- [ ] 编写Docker镜像构建逻辑
+- [ ] 编写镜像推送到阿里云逻辑
+- [ ] 编写SSH部署执行逻辑
+- [ ] 添加脚本使用说明
+
+#### 5.3 生产环境配置
+- [ ] 创建 `docker-compose.prod.yml`
+- [ ] 配置生产环境数据库连接
+- [ ] 配置生产环境CORS设置
+- [ ] 配置生产环境日志设置
+- [ ] 配置健康检查端点
+
+#### 5.4 迁移工具准备
+- [ ] 编写本地数据导出脚本
+- [ ] 编写阿里云数据导入脚本
+- [ ] 创建数据库备份脚本
+- [ ] 创建数据验证脚本
+- [ ] 测试完整迁移流程
+
+---
+
+## 验收检查清单
+
+### 功能验收
+- [ ] 前端能成功调用注册API
+- [ ] 前端能成功调用登录API
+- [ ] 前端能完整使用标书CRUD功能
+- [ ] 统计数据在Dashboard正确显示
+- [ ] 用户只能操作自己的数据
+
+### 技术验收
+- [ ] 所有API端点响应时间 < 500ms
+- [ ] 测试覆盖率 ≥ 70%
+- [ ] 数据库迁移执行无错误
+- [ ] 所有API端点有Swagger文档
+- [ ] 错误处理完善，有合适的HTTP状态码
+
+### 部署验收
+- [ ] 本地环境能稳定运行
+- [ ] docker-compose up -d 正常启动
+- [ ] 部署文档完整且可执行
+- [ ] 部署脚本测试通过
+- [ ] 环境变量配置模板清晰
+
+### 扩展性验收
+- [ ] 所有预留功能有 TODO-ALIYUN 标记
+- [ ] 数据库支持字段扩展
+- [ ] API支持版本管理
+- [ ] 认证系统支持第三方登录集成
+
+---
+
+## 时间表
+
+| Phase | 计划时间 | 完成标准 |
+|-------|---------|---------|
+| Phase 1 | 0.5天 | 数据库迁移完成 |
+| Phase 2 | 1.5天 | 认证API可用 |
+| Phase 3 | 1天 | 标书CRUD完成 |
+| Phase 4 | 1天 | 测试通过 |
+| Phase 5 | 1天 | 部署就绪 |
+| **总计** | **5天** | **全部验收通过** |
+
+**计划开始日期**: 2025-11-13
+**预计完成日期**: 2025-11-17
 
 ### 阶段2：前端MVP原型（3-5天）✅ 部分完成
 **目标**: 可演示的前端界面（Mock数据）
@@ -258,6 +638,215 @@ InnoLiber/
 - [ ] 文献库页面
 - [ ] 用户设置页面
 
+### 阶段1.1：MVP认证系统详细方案（2天）🔄 当前执行
+**目标**: 实现精简版登录/注册功能，预留扩展接口
+
+**确认日期**: 2025-11-11
+
+#### 设计决策
+
+**认证方式**：
+- ✅ 邮箱 + 密码（主要方式）
+- ✅ 教育邮箱检测（格式验证，标记但不强制）
+- ❌ 短信验证码（暂不实现，Phase 3.5）
+- ❌ 人机验证（暂不实现，Phase 3.5）
+
+**验证策略**：
+- ✅ 允许用户注册后不验证邮箱也能使用（宽松策略）
+- ❌ 邮件发送功能（暂不实现，预留接口）
+- ✅ 数据库预留验证字段（email_verified, verify_token等）
+
+**代码规范**：
+- 使用 `TODO-ALIYUN` 标记所有未来功能
+- 预留API端点和数据库字段
+- 添加详细的实现说明注释
+
+#### 前端开发任务（1天）
+
+**1. 安装依赖包**
+| 请你将这部分添加到编译指示文件当中
+```bash
+npm install react-hook-form zod @hookform/resolvers lodash
+npm install -D @types/lodash
+```
+
+**2. 创建文件结构**
+```
+frontend/src/
+├── pages/
+│   ├── LoginPage.tsx                    # 登录页
+│   ├── RegisterPage.tsx                 # 注册页
+│   └── EmailVerifySuccessPage.tsx       # 【预留】验证成功页
+├── store/
+│   └── authStore.ts                     # 认证状态管理（新建）
+├── components/
+│   ├── PasswordStrength.tsx             # 密码强度指示器
+│   └── CaptchaPlaceholder.tsx           # 【预留】验证码组件
+└── utils/
+    └── validators.ts                    # 邮箱验证工具
+```
+
+**3. 页面功能清单**
+
+**LoginPage.tsx**：
+- [x] 左右分栏布局（桌面端 50/50）
+- [x] 单列布局（移动端）
+- [x] 表单字段：邮箱、密码
+- [x] 记住我功能（7天免登录）
+- [x] 忘记密码链接【预留】
+- [x] React Hook Form + Zod验证
+- [x] 错误提示UI
+- [x] 登录成功跳转Dashboard
+
+**RegisterPage.tsx**：
+- [x] 表单字段：邮箱、密码、确认密码、姓名、研究方向
+- [x] 教育邮箱实时检测（图标提示）
+- [x] 密码强度指示器（弱/中/强）
+- [x] 验证码组件位置预留（TODO-ALIYUN标记）
+- [x] 用户协议勾选
+- [x] 注册成功提示（说明暂无验证邮件）
+
+**authStore.ts**：
+- [x] 状态：user, token, isAuthenticated
+- [x] 方法：login(), register(), logout(), checkAuth()
+- [x] Token持久化（localStorage）
+- [x] 自动刷新逻辑【预留】
+
+**4. 表单验证规则**
+```typescript
+// 邮箱验证
+- 格式验证（RFC 5322标准）
+- 教育邮箱检测（.edu.cn, .edu, .ac.*）
+- 后端重复检测
+
+// 密码验证
+- 长度 ≥ 8位
+- 必须包含字母和数字
+- 密码强度可视化（0-4级）
+```
+
+#### 后端开发任务（1天）
+
+**1. 安装依赖包**
+```bash
+poetry add python-jose[cryptography] passlib[bcrypt] python-multipart
+# 邮件依赖暂不安装
+```
+
+**2. 创建文件结构**
+```
+backend/app/
+├── api/
+│   └── auth.py                          # 认证路由
+├── core/
+│   ├── security.py                      # JWT/密码工具
+│   └── email.py                         # 【预留】邮件服务
+├── schemas/
+│   └── auth.py                          # Pydantic模型
+└── models/
+    └── user.py                          # 扩展User模型
+```
+
+**3. 数据库模型扩展（User表）**
+```python
+# 新增字段
+email_verified: bool = False              # 邮箱验证状态
+is_edu_email: bool = False                # 教育邮箱标记
+verify_token: str | None = None           # 【预留】验证令牌
+verify_token_expires: datetime | None     # 【预留】令牌过期时间
+failed_login_attempts: int = 0            # 【预留】失败次数
+last_login: datetime | None               # 最后登录时间
+```
+
+**4. API端点实现**
+```python
+POST /api/auth/register:
+  - 输入验证（邮箱、密码、姓名）
+  - 邮箱重复检测
+  - 教育邮箱判断（正则匹配）
+  - 密码哈希（bcrypt, rounds=12）
+  - 创建用户记录
+  - 【TODO-ALIYUN】生成验证令牌（预留）
+  - 【TODO-ALIYUN】调用邮件服务（预留）
+  - 返回成功信息
+
+POST /api/auth/login:
+  - 邮箱查询用户
+  - 密码验证
+  - 【TODO-ALIYUN】失败次数检测（预留）
+  - JWT签发（24小时有效期）
+  - 更新last_login时间戳
+  - 返回token和用户信息
+
+GET /api/auth/me:
+  - JWT验证（依赖注入）
+  - 返回当前用户信息
+
+GET /api/auth/verify-email?token=xxx:
+  - 【预留接口】验证token有效性
+  - 更新email_verified状态
+  - 返回成功/失败信息
+```
+
+**5. 安全实现要点**
+- 密码哈希：bcrypt算法，rounds=12
+- JWT配置：HS256算法，24小时过期
+- CORS配置：允许前端域名
+- 输入验证：Pydantic模型严格验证
+
+**6. TODO-ALIYUN注释规范**
+```python
+# TODO-ALIYUN: [功能名称] - 需要配置阿里云服务
+# 依赖：服务名称
+# 预计工作量：X小时
+# 优先级：P1/P2/P3
+# 参考文档：URL
+
+示例：
+async def send_verification_email(email: str, token: str):
+    """
+    发送邮箱验证邮件
+
+    TODO-ALIYUN: [邮件发送] - 需要配置阿里云DirectMail服务
+    依赖：
+      1. 阿里云账号开通DirectMail
+      2. 配置发信域名（如 innolifer.com）
+      3. 安装SDK: aliyun-python-sdk-dm
+      4. 环境变量: ALIYUN_ACCESS_KEY, ALIYUN_SECRET_KEY
+    预计工作量：2-3小时
+    优先级：P1
+    参考文档：https://help.aliyun.com/product/29412.html
+    """
+    # 当前实现：开发模式日志
+    logger.info(f"[DEV] 验证邮件应发送至：{email}")
+    logger.info(f"[DEV] 验证链接：{settings.FRONTEND_URL}/verify-email?token={token}")
+    pass
+```
+
+#### 数据库迁移
+
+**1. 生成迁移文件**
+```bash
+cd backend
+alembic revision --autogenerate -m "Add email verification fields to users"
+```
+
+**2. 执行迁移**
+```bash
+alembic upgrade head
+```
+
+#### 测试清单
+
+- [ ] 注册功能：成功/失败/重复邮箱
+- [ ] 教育邮箱检测：.edu.cn/.edu/.ac.uk
+- [ ] 登录功能：成功/密码错误/用户不存在
+- [ ] Token验证：有效/过期/无效
+- [ ] 响应式布局：xs/md/xl断点
+- [ ] 表单验证：所有验证规则触发
+
+---
+
 ### 阶段3：SPG-S内容生成服务（7-10天）⏳ 待开始
 **目标**: 实现内容生成核心功能
 
@@ -269,6 +858,235 @@ InnoLiber/
 - [ ] Prompt工程
 - [ ] 结构化内容生成
 - [ ] 前后端API联调
+
+---
+
+### 阶段3.5：认证系统增强 - 阿里云服务集成（5-7天）⏳ 未来实现
+**目标**: 完善认证系统，集成阿里云服务提升安全性和用户体验
+
+**确认日期**: 2025-11-11
+**实施时机**: Phase 3完成后，Phase 4之前
+
+#### 阿里云服务集成清单
+
+##### P1 - 高优先级（Phase 3完成后立即实施）
+
+**1. 阿里云邮件推送（DirectMail）** 🔴
+```
+功能：发送邮箱验证邮件、密码重置邮件
+服务地址：https://www.aliyun.com/product/directmail
+
+准备工作：
+  1. 阿里云账号 + 实名认证
+  2. 域名准备（如 innolifer.com）
+  3. 在阿里云DirectMail配置发信域名
+  4. 配置DNS记录（SPF、MX、CNAME）
+  5. 域名验证通过（约1-2小时）
+  6. 创建发信地址（如 noreply@innolifer.com）
+
+技术实现：
+  - Python SDK：aliyun-python-sdk-dm
+  - 或SMTP方式：使用标准邮件库
+
+成本：
+  - 免费额度：每日200封
+  - 超出后：约 0.0004元/封
+
+工作量：2-3小时
+优先级：P1
+
+代码位置：
+  - backend/app/core/email.py
+  - backend/app/api/auth.py (register/reset-password端点)
+
+实现步骤：
+  1. poetry add aliyun-python-sdk-core aliyun-python-sdk-dm
+  2. 配置环境变量（ACCESS_KEY, SECRET_KEY, MAIL_FROM）
+  3. 实现send_verification_email()函数
+  4. 创建HTML邮件模板
+  5. 集成到注册流程
+  6. 实现邮箱验证端点
+  7. 测试发送流程
+```
+
+**2. 阿里云验证码2.0（滑动拼图验证）** 🔴
+```
+功能：替换登录/注册的人机验证机制
+服务地址：https://help.aliyun.com/product/28308.html
+
+准备工作：
+  1. 阿里云账号 + 实名认证
+  2. 开通验证码2.0服务
+  3. 创建验证配置（场景：注册、登录）
+  4. 获取AppKey和SecretKey
+
+触发场景：
+  - 用户注册时（必须验证）
+  - 登录失败3次后触发
+  - 发送密码重置邮件前
+
+技术实现：
+  - 前端：引入阿里云验证码SDK
+  - 后端：调用验证API
+
+成本：
+  - 免费额度：每月10万次调用
+  - 超出后：约 0.0015元/次
+
+工作量：2-3小时
+优先级：P1
+
+代码位置：
+  - frontend/src/components/CaptchaPlaceholder.tsx → AliCaptcha.tsx
+  - backend/app/core/captcha.py
+  - backend/app/api/auth.py (增加验证逻辑)
+
+实现步骤：
+  1. 前端安装SDK: npm install @alicloud/captcha-sdk
+  2. 创建验证组件（滑动拼图UI）
+  3. 后端安装SDK: poetry add aliyun-python-sdk-captcha
+  4. 实现后端验证逻辑
+  5. 集成到注册/登录流程
+  6. 测试验证流程
+```
+
+##### P2 - 中优先级（正式发布前）
+
+**3. 邮箱验证强制化** 🟡
+```
+功能：未验证用户功能限制策略
+依赖：阿里云DirectMail（必须先完成P1-1）
+
+限制策略：
+  - 未验证用户最多创建3个标书
+  - 未验证用户不能使用AI生成功能
+  - 未验证用户不能导出标书
+  - 每7天发送提醒邮件
+
+技术实现：
+  - 后端中间件检查email_verified状态
+  - API端点增加权限验证
+  - 定时任务发送提醒邮件
+
+工作量：1-2小时
+优先级：P2
+
+代码位置：
+  - backend/app/middleware/permissions.py
+  - backend/app/api/proposals.py
+  - backend/app/tasks/email_reminders.py
+```
+
+**4. 手机号绑定（可选）** 🟡
+```
+功能：账号安全增强，提供密码重置备用方式
+服务地址：https://www.aliyun.com/product/sms
+
+准备工作：
+  1. 开通阿里云短信服务
+  2. 实名认证（需企业资质）
+  3. 创建短信签名（审核1-2工作日）
+  4. 创建短信模板（审核1-2工作日）
+  5. 获取AccessKey和SecretKey
+
+功能清单：
+  - 绑定手机号（可选）
+  - 手机验证码登录（快捷登录）
+  - 手机验证码重置密码
+
+成本：
+  - 约0.045元/条（中国大陆）
+
+工作量：4-5小时
+优先级：P2
+
+数据库扩展：
+  - User.phone: str | None
+  - User.phone_verified: bool = False
+
+代码位置：
+  - backend/app/core/sms.py
+  - backend/app/api/auth.py (新增短信相关端点)
+  - frontend/src/pages/RegisterPage.tsx (添加手机号字段)
+```
+
+##### P3 - 低优先级（长期优化）
+
+**5. 第三方登录** ⚪
+```
+功能：提供便捷登录方式
+
+实现选项：
+  - 微信登录（国内用户友好）
+  - ORCID登录（学术身份认证）
+  - Google登录（国际用户）
+
+工作量：每个3-4小时
+优先级：P3
+```
+
+**6. 无感知验证（智能风控）** ⚪
+```
+功能：提升用户体验，仅风险用户触发验证
+
+技术方案：
+  - 设备指纹识别
+  - 鼠标轨迹/键盘输入分析
+  - IP地址风险评估
+  - 登录时间/频率异常检测
+
+工作量：7-10天（需要大量数据训练）
+优先级：P3
+```
+
+#### 环境变量配置清单
+
+Phase 3.5完成后需要的环境变量：
+
+```bash
+# 阿里云通用配置
+ALIYUN_ACCESS_KEY_ID=LTAI5t...
+ALIYUN_ACCESS_KEY_SECRET=xxx...
+ALIYUN_REGION_ID=cn-hangzhou
+
+# DirectMail邮件推送
+ALIYUN_MAIL_FROM=noreply@innoliber.com
+ALIYUN_MAIL_FROM_NAME=InnoLiber团队
+ALIYUN_MAIL_REPLY_TO=support@innoliber.com
+
+# 验证码2.0
+ALIYUN_CAPTCHA_APP_KEY=xxx
+ALIYUN_CAPTCHA_SECRET_KEY=xxx
+
+# 短信服务（可选）
+ALIYUN_SMS_SIGN_NAME=InnoLiber
+ALIYUN_SMS_TEMPLATE_CODE=SMS_xxx
+
+# 前端URL（用于邮件链接）
+FRONTEND_URL=https://innoliber.com
+# 或开发环境：http://localhost:5173
+```
+
+#### 实施时间表
+
+| 任务 | 工作量 | 依赖 | 预计完成日期 |
+|------|--------|------|-------------|
+| P1-1: DirectMail集成 | 3小时 | 域名配置 | Phase 3完成后第1天 |
+| P1-2: 验证码2.0集成 | 3小时 | 无 | Phase 3完成后第2天 |
+| 测试与调试 | 1天 | P1-1, P1-2 | Phase 3完成后第3天 |
+| P2-3: 邮箱验证强制化 | 2小时 | P1-1 | Phase 4期间 |
+| P2-4: 手机号绑定 | 5小时 | 短信审核 | 正式发布前 |
+
+#### 成功标准
+
+- [ ] 用户注册后收到验证邮件（到达率 > 95%）
+- [ ] 滑动验证码识别率 > 99%（人类）
+- [ ] 验证码恶意请求拦截率 > 90%
+- [ ] 邮件发送延迟 < 10秒
+- [ ] 验证码交互响应 < 2秒
+- [ ] 无误拦截正常用户（误报率 < 1%）
+
+---
 
 ### 阶段4：K-TAS文献分析服务（10-14天）⏳ 待开始
 **目标**: 实现文献分析功能
@@ -414,40 +1232,86 @@ InnoLiber/
 
 ## 🚀 当前工作与下一步行动
 
-### ✅ 已完成（2025-10-29）
-1. **阶段0 - 基础设施搭建**
-   - 完整的Monorepo项目结构
-   - Docker开发环境配置
-   - 前后端框架搭建
-   - 数据库模型定义
-   - 首页完整实现（包括所有相关组件）
-   - 完整的技术文档体系
+### ✅ 已完成
+**阶段0 - 基础设施搭建（2025-10-29）**
+- 完整的Monorepo项目结构
+- Docker开发环境配置
+- 前后端框架搭建
+- 数据库模型定义
+- 首页完整实现（包括所有相关组件）
+- 完整的技术文档体系
 
-### 🔄 正在进行（阶段1 - 后端API实现）
-1. **数据库迁移配置**
-   - 当前状态：数据模型已定义，等待配置Alembic
-   - 下一步：安装Alembic并生成初始迁移
+**阶段0.5 - 前端设计系统完善（2025-10-30）**
+- 7个核心页面完整设计（桌面端+移动端）
+- 响应式设计指南
+- 组件开发规范
 
-2. **API端点开发**
-   - 认证系统：用户注册、登录、令牌验证
-   - 标书管理：CRUD操作和统计信息
-   - 种子数据：测试用户和示例标书
+### 🔄 正在进行
+**阶段1.1 - MVP认证系统（2025-11-11）**
+- ✅ 认证方案确认（邮箱+密码，教育邮箱检测）
+- ✅ 详细执行计划制定
+- ⏳ 等待开始实现登录/注册页面
+
+**当前状态**:
+- 已完成认证系统详细方案设计
+- 已添加Phase 3.5阿里云服务集成计划
+- 已定义TODO-ALIYUN注释规范
+- 准备开始前后端代码实现
+
+**下一步**:
+1. 安装前端依赖包（react-hook-form, zod等）
+2. 创建LoginPage和RegisterPage
+3. 实现authStore状态管理
+4. 扩展后端User模型
+5. 创建认证API端点
+6. 数据库迁移
 
 ### ⏳ 待开始（按优先级排序）
-1. **完成阶段1** - 后端API实现（预计2025-11-01完成）
-2. **阶段2剩余部分** - 其他前端页面（标书编辑、详情、分析等）
+1. **阶段1剩余部分** - 其他前端页面（标书编辑、详情、分析等）
+2. **阶段2** - 后端API实现（标书CRUD等）
 3. **阶段3** - SPG-S内容生成服务集成
-4. **阶段4** - K-TAS文献分析服务
-5. **阶段5** - DDC-S格式合规检查
+4. **阶段3.5** - 认证系统增强（阿里云服务集成）
+5. **阶段4** - K-TAS文献分析服务
+6. **阶段5** - DDC-S格式合规检查
 
 ### 等待用户提供
-- 🔄 DeepSeek API Key（阶段3需要）
-- 🔄 NSFC申请书样本文档（阶段5需要）
-- 🔄 BIT论文规范文档（阶段5需要）
+**Phase 3需要**:
+- 🔄 DeepSeek API Key（SPG-S服务）
+
+**Phase 3.5需要（阿里云服务）**:
+- 🔄 阿里云账号（已有）
+- 🔄 域名配置（邮件推送）
+- 🔄 开通DirectMail服务
+- 🔄 开通验证码2.0服务
+
+**Phase 5需要**:
+- 🔄 NSFC申请书样本文档
+- 🔄 BIT论文规范文档
 
 ---
 
 ## 📝 开发记录
+
+### 2025-11-11
+**主要成果**:
+- ✅ 完成认证系统详细方案设计
+- ✅ 确认MVP范围：邮箱+密码，教育邮箱检测，暂不集成第三方服务
+- ✅ 添加Phase 1.1详细实施计划（前后端任务清单）
+- ✅ 添加Phase 3.5阿里云服务集成计划（邮件推送、验证码、短信）
+- ✅ 定义TODO-ALIYUN代码注释规范
+- ✅ 更新开发计划文档
+
+**设计决策**:
+- 认证方式：邮箱+密码（主要），教育邮箱标记（不强制）
+- 验证策略：宽松策略，允许未验证邮箱用户使用
+- 代码预留：所有未来功能使用TODO-ALIYUN标记
+- 扩展性：数据库字段和API端点预留扩展空间
+
+**下一步计划**:
+- 开始Phase 1.1代码实现
+- 前端：LoginPage + RegisterPage + authStore
+- 后端：认证API + 数据库迁移
+- 测试：注册/登录/Token验证流程
 
 ### 2025-10-29
 **主要成果**:
@@ -462,12 +1326,6 @@ InnoLiber/
 - TypeScript类型系统完善
 - Ant Design主题定制符合设计风格
 - 组件化设计良好，可复用性强
-
-**下一步计划**:
-- 继续推进阶段1：后端API实现
-- 配置Alembic数据库迁移
-- 实现JWT认证系统
-- 创建API端点和种子数据
 
 ---
 

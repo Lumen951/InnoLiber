@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "innolibr-backend"
+name = "innoliber-backend"
 version = "0.1.0"
 description = "InnoLiber Backend API Service"
 authors = ["InnoLiber Team"]

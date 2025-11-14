@@ -1,4 +1,16 @@
-// 首页组件
+/**
+ * @file Dashboard.tsx
+ * @description 首页仪表板 - 标书管理主界面
+ *
+ * <copyright>
+ * Copyright (c) 2024-2025 InnoLiber Team
+ * Licensed under the MIT License
+ * </copyright>
+ *
+ * @author InnoLiber Team
+ * @version 1.0.0
+ */
+
 import React, { useState } from 'react';
 import { Row, Col, Button, Input, Select, Pagination, Empty, Spin } from 'antd';
 import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
@@ -10,7 +22,28 @@ import type { ProposalCard as ProposalCardType } from '@/types';
 
 const { Option } = Select;
 
+/**
+ * Dashboard 首页组件 - 标书管理中心
+ *
+ * <rationale>
+ * 布局设计：
+ * - 四个统计卡片：总数、草稿、审阅中、已完成（状态概览）
+ * - 操作栏：搜索、筛选、新建（核心功能入口）
+ * - 标书列表：响应式网格，桌面端2列，移动端1列
+ * - 分页：支持跳转和页大小调整
+ * </rationale>
+ *
+ * <warning type="performance">
+ * ⚠️ 大数据量考虑：
+ * - 当标书超过1000个时，需要添加虚拟滚动
+ * - 搜索功能应该防抖，避免频繁API调用
+ * - 统计数据可以缓存5分钟，减少服务器压力
+ * </warning>
+ *
+ * @returns Dashboard 首页组件
+ */
 const Dashboard: React.FC = () => {
+  // 标书数据管理（来自自定义Hook）
   const {
     proposals,
     statistics,
@@ -26,17 +59,29 @@ const Dashboard: React.FC = () => {
     handleFilterChange,
   } = useProposals();
 
-  // 状态
+  // 本地状态管理
   const [searchText, setSearchText] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
 
-  // 处理搜索
+  /**
+   * 搜索功能处理
+   *
+   * <todo priority="high">
+   * TODO(frontend-team, 2025-11-15): [P0] 实现搜索功能
+   * - 支持标题、研究领域、关键词搜索
+   * - 添加防抖机制（300ms），避免频繁API调用
+   * - 搜索结果高亮匹配词
+   * </todo>
+   */
   const handleSearch = () => {
     // TODO: 实现搜索功能
     console.log('搜索:', searchText);
   };
 
-  // 处理状态筛选
+  /**
+   * 状态筛选处理
+   * @param value - 选中的状态值
+   */
   const handleStatusFilter = (value: string) => {
     setStatusFilter(value);
     handleFilterChange({
@@ -44,12 +89,26 @@ const Dashboard: React.FC = () => {
     });
   };
 
-  // 处理标书操作
+  // ========== 标书操作事件处理器 ==========
+
+  /**
+   * 编辑标书操作
+   *
+   * <todo priority="medium">
+   * TODO(frontend-team, 2025-11-20): [P1] 导航到编辑页面
+   * - 使用 React Router navigate('/proposals/${id}/edit')
+   * - 传递标书数据到编辑页面状态
+   * </todo>
+   */
   const handleEditProposal = (proposal: ProposalCardType) => {
     console.log('编辑标书:', proposal.id);
     // TODO: 导航到编辑页面
   };
 
+  /**
+   * 删除标书操作
+   * @param proposal - 待删除的标书对象
+   */
   const handleDeleteProposal = async (proposal: ProposalCardType) => {
     try {
       await deleteProposal(proposal.id);
@@ -58,16 +117,44 @@ const Dashboard: React.FC = () => {
     }
   };
 
+  /**
+   * 质量分析操作
+   *
+   * <todo priority="medium">
+   * TODO(frontend-team, 2025-11-20): [P1] 导航到分析页面
+   * - 触发SPG-S服务进行质量分析
+   * - 显示分析进度和结果
+   * </todo>
+   */
   const handleAnalyzeProposal = (proposal: ProposalCardType) => {
     console.log('分析标书:', proposal.id);
     // TODO: 导航到分析页面
   };
 
+  /**
+   * 导出标书操作
+   *
+   * <todo priority="medium">
+   * TODO(frontend-team, 2025-11-25): [P1] 实现导出功能
+   * - 支持PDF、Word、LaTeX格式导出
+   * - 显示导出进度
+   * - 下载完成后提示用户
+   * </todo>
+   */
   const handleExportProposal = (proposal: ProposalCardType) => {
     console.log('导出标书:', proposal.id);
     // TODO: 实现导出功能
   };
 
+  /**
+   * 查看标书详情
+   *
+   * <todo priority="medium">
+   * TODO(frontend-team, 2025-11-20): [P1] 导航到详情页面
+   * - 只读模式展示标书内容
+   * - 显示AI分析报告和建议
+   * </todo>
+   */
   const handleViewProposal = (proposal: ProposalCardType) => {
     console.log('查看标书:', proposal.id);
     // TODO: 导航到详情页面
@@ -76,9 +163,19 @@ const Dashboard: React.FC = () => {
   return (
     <SidebarLayout>
       <div className="dashboard">
-        {/* 统计信息 */}
+        {/*
+         * 统计信息概览区域
+         * <rationale>
+         * 4×6布局设计：
+         * - 总数（深蓝色）：主要KPI，用户关注的核心指标
+         * - 草稿（蓝色）：待完成工作量，提醒用户继续编辑
+         * - 审阅中（橙色）：进行中状态，关注AI处理进度
+         * - 已完成（绿色）：成果数量，给用户成就感
+         * </rationale>
+         */}
         {statistics && (
           <Row gutter={[16, 16]} style={{ marginBottom: '24px' }}>
+            {/* 总数统计卡片 */}
             <Col span={6}>
               <div style={{
                 background: '#fff',
@@ -94,6 +191,7 @@ const Dashboard: React.FC = () => {
                 </p>
               </div>
             </Col>
+            {/* 草稿统计卡片 */}
             <Col span={6}>
               <div style={{
                 background: '#fff',
@@ -109,6 +207,7 @@ const Dashboard: React.FC = () => {
                 </p>
               </div>
             </Col>
+            {/* 审阅中统计卡片 */}
             <Col span={6}>
               <div style={{
                 background: '#fff',
@@ -124,6 +223,7 @@ const Dashboard: React.FC = () => {
                 </p>
               </div>
             </Col>
+            {/* 已完成统计卡片 */}
             <Col span={6}>
               <div style={{
                 background: '#fff',
@@ -142,7 +242,15 @@ const Dashboard: React.FC = () => {
           </Row>
         )}
 
-        {/* 操作栏 */}
+        {/*
+         * 操作栏 - 搜索、筛选、新建
+         * <rationale>
+         * 布局分离：
+         * - 左侧：查询功能（搜索输入框 + 状态筛选）
+         * - 右侧：创建功能（新建按钮）
+         * - 保持功能分组清晰，符合用户习惯
+         * </rationale>
+         */}
         <div style={{
           background: '#fff',
           padding: '16px 24px',
@@ -152,6 +260,7 @@ const Dashboard: React.FC = () => {
           justifyContent: 'space-between',
           alignItems: 'center'
         }}>
+          {/* 左侧：搜索和筛选 */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <Input
               placeholder="搜索标书..."
@@ -175,6 +284,7 @@ const Dashboard: React.FC = () => {
             </Select>
           </div>
 
+          {/* 右侧：新建按钮 */}
           <Button
             type="primary"
             icon={<PlusOutlined />}
@@ -184,17 +294,29 @@ const Dashboard: React.FC = () => {
           </Button>
         </div>
 
-        {/* 标书列表 */}
+        {/*
+         * 标书列表展示区域
+         * <rationale>
+         * 状态分支渲染：
+         * - loading: 显示加载动画，给用户反馈
+         * - error: 显示错误信息，引导用户重试
+         * - empty: 引导用户创建第一个标书
+         * - normal: 响应式网格布局（移动端1列，桌面端2列）
+         * </rationale>
+         */}
         <div style={{ minHeight: '400px' }}>
           {loading ? (
+            // 加载状态
             <div style={{ textAlign: 'center', padding: '100px 0' }}>
               <Spin size="large" />
             </div>
           ) : error ? (
+            // 错误状态
             <div style={{ textAlign: 'center', padding: '100px 0' }}>
               <Empty description={error} />
             </div>
           ) : proposals.length === 0 ? (
+            // 空状态 - 引导用户创建
             <Empty
               description="暂无标书"
               image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -204,6 +326,7 @@ const Dashboard: React.FC = () => {
               </Button>
             </Empty>
           ) : (
+            // 正常列表展示
             <Row gutter={[16, 16]}>
               {proposals.map((proposal) => (
                 <Col key={proposal.id} xs={24} lg={12}>
@@ -221,7 +344,16 @@ const Dashboard: React.FC = () => {
           )}
         </div>
 
-        {/* 分页 */}
+        {/*
+         * 分页组件
+         * <rationale>
+         * 分页配置：
+         * - showSizeChanger: 允许用户调整每页显示数量
+         * - showQuickJumper: 支持快速跳转到指定页码
+         * - showTotal: 显示数据范围和总数，用户了解数据规模
+         * - 居中显示：符合用户浏览习惯
+         * </rationale>
+         */}
         {proposals.length > 0 && (
           <div style={{
             marginTop: '24px',

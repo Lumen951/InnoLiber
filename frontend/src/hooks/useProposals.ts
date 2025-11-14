@@ -45,12 +45,12 @@ export const useProposals = () => {
         order: params?.order || sortOrder,
       });
 
-      setProposals(response.data.items);
+      setProposals(response.items);
       setPagination(
-        response.data.page,
-        response.data.pageSize,
-        response.data.total,
-        response.data.totalPages
+        response.page,
+        response.pageSize,
+        response.total,
+        response.totalPages
       );
     } catch (error) {
       setError('获取标书列表失败');
@@ -64,7 +64,7 @@ export const useProposals = () => {
   const fetchStatistics = async () => {
     try {
       const response = await proposalService.getStatistics();
-      setStatistics(response.data);
+      setStatistics(response);
     } catch (error) {
       console.error('Failed to fetch statistics:', error);
     }

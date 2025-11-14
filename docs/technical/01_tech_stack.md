@@ -247,8 +247,8 @@ services:
   postgres:
     image: pgvector/pgvector:pg16
     environment:
-      POSTGRES_DB: innolibr
-      POSTGRES_USER: innolibr
+      POSTGRES_DB: innoliber
+      POSTGRES_USER: innoliber
       POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"

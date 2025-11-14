@@ -2,7 +2,7 @@
 
 **版本**: v1.0
 **创建日期**: 2025-10-28
-**Base URL**: `https://api.innolibr.com/v1`
+**Base URL**: `https://api.innoliber.com/v1`
 **协议**: HTTPS only
 
 ---
