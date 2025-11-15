@@ -392,7 +392,7 @@ InnoLiber/
 **目标**: 实现完整的后端API服务、数据库迁移系统、完善的测试用例和云端部署方案
 
 **制定日期**: 2025-11-12
-**执行状态**: Phase 2.1已完成，Phase 2.2待执行
+**执行状态**: Phase 2.1和2.2已完成，Phase 2.3待执行
 
 ---
 
@@ -426,47 +426,53 @@ InnoLiber/
 
 ---
 
-## Phase 2: 认证系统实现（1.5天）
+## Phase 2: 认证系统实现（1.5天）✅ 已完成（2025-11-15）
 
 #### 2.1 核心安全模块
-- [ ] 创建 `backend/app/core/security.py` 文件
-- [ ] 实现 get_password_hash 函数
-- [ ] 实现 verify_password 函数
-- [ ] 实现 create_access_token 函数
-- [ ] 实现 verify_token 函数
-- [ ] 实现 is_edu_email 函数
+- [x] 创建 `backend/app/core/security.py` 文件
+- [x] 实现 get_password_hash 函数（bcrypt直接实现，替代passlib）
+- [x] 实现 verify_password 函数
+- [x] 实现 create_access_token 函数
+- [x] 实现 verify_token 函数
+- [x] 实现 is_edu_email 函数
 
 #### 2.2 数据库会话管理
-- [ ] 创建 `backend/app/db/session.py` 文件
-- [ ] 配置异步数据库引擎
-- [ ] 创建 AsyncSessionLocal 工厂
-- [ ] 实现 get_db 依赖注入函数
+- [x] 创建 `backend/app/db/session.py` 文件
+- [x] 配置异步数据库引擎
+- [x] 创建 AsyncSessionLocal 工厂
+- [x] 实现 get_db 依赖注入函数
 
 #### 2.3 FastAPI依赖注入
-- [ ] 创建 `backend/app/core/dependencies.py` 文件
-- [ ] 实现 oauth2_scheme 依赖
-- [ ] 实现 get_current_user 函数
-- [ ] 实现 get_current_active_user 函数
+- [x] 创建 `backend/app/core/dependencies.py` 文件
+- [x] 实现 oauth2_scheme 依赖
+- [x] 实现 get_current_user 函数
+- [x] 实现 get_current_active_user 函数
 
 #### 2.4 Pydantic Schema
-- [ ] 创建 `backend/app/schemas/auth.py` 文件
-- [ ] 定义 UserRegister model
-- [ ] 定义 UserLogin model
-- [ ] 定义 Token model
-- [ ] 定义 UserResponse model
-- [ ] 添加表单验证规则
+- [x] 创建 `backend/app/schemas/auth.py` 文件
+- [x] 定义 UserRegister model
+- [x] 定义 UserLogin model
+- [x] 定义 Token model
+- [x] 定义 UserResponse model
+- [x] 添加表单验证规则
 
 #### 2.5 认证API路由
-- [ ] 创建 `backend/app/api/v1/auth.py` 文件
-- [ ] 实现注册端点：POST /api/v1/auth/register
-- [ ] 实现登录端点：POST /api/v1/auth/login
-- [ ] 实现获取当前用户：GET /api/v1/auth/me
-- [ ] 添加错误处理和HTTP状态码
-- [ ] 添加 TODO-ALIYUN 标记预留功能
+- [x] 创建 `backend/app/api/v1/auth.py` 文件
+- [x] 实现注册端点：POST /api/v1/auth/register
+- [x] 实现登录端点：POST /api/v1/auth/login
+- [x] 实现获取当前用户：GET /api/v1/auth/me
+- [x] 添加错误处理和HTTP状态码
+- [x] 添加 TODO-ALIYUN 标记预留功能
 
 #### 2.6 集成到主应用
-- [ ] 修改 `backend/app/main.py` 导入认证路由
-- [ ] 注册认证路由到FastAPI应用
+- [x] 修改 `backend/app/main.py` 导入认证路由
+- [x] 注册认证路由到FastAPI应用
+
+**额外完成**:
+- [x] 移除passlib依赖，直接使用bcrypt库
+- [x] 实现SHA256+base64长密码处理方案
+- [x] 添加完整的技术文档和设计决策说明
+- [x] 完成端到端认证功能测试
 - [ ] 配置CORS中间件
 - [ ] 测试应用启动正常
 
