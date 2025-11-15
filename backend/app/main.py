@@ -41,6 +41,7 @@ Related:
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.v1 import auth
 from app.core.config import settings
 
 """
@@ -101,6 +102,23 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+# ============================================================================
+# API路由注册 (API Routes Registration)
+# ============================================================================
+
+"""
+API路由注册
+
+<rationale>
+路由组织：
+- prefix="/api/v1": API版本控制，便于未来升级
+- include_router: 模块化路由管理
+- 认证路由: /api/v1/auth/*
+</rationale>
+"""
+app.include_router(auth.router, prefix="/api/v1")
 
 
 @app.get("/")

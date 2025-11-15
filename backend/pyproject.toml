@@ -15,7 +15,7 @@ asyncpg = "^0.29.0"
 pydantic = {extras = ["email"], version = "^2.9.2"}
 pydantic-settings = "^2.6.0"
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
-passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+bcrypt = "^4.0.0"  # 密码哈希：直接使用bcrypt而非passlib
 python-multipart = "^0.0.12"
 alembic = "^1.13.3"
 redis = "^5.2.0"
