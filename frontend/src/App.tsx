@@ -6,6 +6,9 @@ import RegisterPage from './pages/RegisterPage';
 import ProposalCreatePage from './pages/ProposalCreatePage';
 import ProposalEditPage from './pages/ProposalEditPage';
 import ProposalDetailPage from './pages/ProposalDetailPage';
+import AnalysisPage from './pages/AnalysisPage';
+import LibraryPage from './pages/LibraryPage';
+import SettingsPage from './pages/SettingsPage';
 import { initAuth } from './store/authStore';
 
 function App() {
@@ -31,10 +34,10 @@ function App() {
       <Route path="/proposals/:id/edit" element={<ProposalEditPage />} />
       <Route path="/proposals/:id" element={<ProposalDetailPage />} />
 
-      {/* TODO: 其他页面 */}
-      <Route path="/analysis" element={<div>数据分析页面 - 开发中</div>} />
-      <Route path="/library" element={<div>文献库页面 - 开发中</div>} />
-      <Route path="/settings" element={<div>设置页面 - 开发中</div>} />
+      {/* 其他功能页面 */}
+      <Route path="/analysis" element={<AnalysisPage />} />
+      <Route path="/library" element={<LibraryPage />} />
+      <Route path="/settings" element={<SettingsPage />} />
 
       {/* TODO-ALIYUN: [邮箱验证] - 添加邮箱验证成功页面路由
           <Route path="/verify-email" element={<EmailVerifySuccessPage />} />
