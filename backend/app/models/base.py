@@ -49,19 +49,29 @@ Usage:
 """
 
 from sqlalchemy import Column, Integer, String, DateTime, Text, Boolean
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.asyncio import AsyncAttrs
+from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.sql import func
 
 """
-SQLAlchemy声明式基类
+SQLAlchemy 2.0 声明式基类
 
 <rationale>
-Base类作用：
+Base类作用（SQLAlchemy 2.0+）：
 - 所有ORM模型的共同父类
 - 提供表映射的基础功能
 - 管理所有表的元数据（metadata）
 - 支持自动表名生成和关系映射
+- AsyncAttrs Mixin: 使关系和延迟加载属性可await访问
 </rationale>
+
+<design-decision>
+为什么使用 DeclarativeBase + AsyncAttrs？
+- DeclarativeBase: SQLAlchemy 2.0推荐的现代基类
+- AsyncAttrs Mixin: 防止异步环境中的隐式IO错误
+- 支持 await obj.awaitable_attrs.relationship 访问延迟加载的关系
+- 更好的类型提示和IDE支持
+</design-decision>
 
 <warning type="thread-safety">
 ⚠️ Base类是全局单例：
@@ -70,12 +80,35 @@ Base类作用：
 - 避免在运行时动态修改Base.metadata
 </warning>
 
+<reference>
+参考 Context7 - SQLAlchemy 2.0 /websites/sqlalchemy_en_20
+AsyncAttrs 使用模式：
+- 继承顺序：class Base(AsyncAttrs, DeclarativeBase)
+- 访问延迟属性：await obj.awaitable_attrs.relationship_name
+- 防止 greenlet_spawn 错误在异步上下文中
+</reference>
+
 Example:
-    >>> # 定义新模型
+    >>> # 定义新模型（SQLAlchemy 2.0风格）
     >>> class Article(Base):
     ...     __tablename__ = "articles"
     ...     id = Column(Integer, primary_key=True)
     ...     title = Column(String(200))
     ...     created_at = Column(DateTime, server_default=func.now())
+    ...
+    >>> # 异步访问关系
+    >>> article = await session.get(Article, 1)
+    >>> comments = await article.awaitable_attrs.comments
 """
-Base = declarative_base()
+
+
+class Base(AsyncAttrs, DeclarativeBase):
+    """
+    SQLAlchemy 2.0 异步ORM基类
+
+    Features:
+    - AsyncAttrs: 支持异步访问延迟加载属性
+    - DeclarativeBase: 现代声明式映射基类
+    - Type hints friendly: 更好的IDE支持
+    """
+    pass

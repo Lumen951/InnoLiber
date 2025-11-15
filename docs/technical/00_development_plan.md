@@ -388,37 +388,41 @@ InnoLiber/
 
 ---
 
-### 阶段2：后端API实现与数据库迁移（5-7天）🔄 开始执行
+### 阶段2：后端API实现与数据库迁移（5-7天）🔄 10%完成
 **目标**: 实现完整的后端API服务、数据库迁移系统、完善的测试用例和云端部署方案
 
 **制定日期**: 2025-11-12
-**执行状态**: 计划制定完成，等待执行确认
+**执行状态**: Phase 2.1已完成，Phase 2.2待执行
 
 ---
 
-## Phase 1: 数据库迁移配置（0.5天）
+## Phase 1: 数据库迁移配置（0.5天）✅ 已完成（2025-11-15）
 
 #### 1.1 Alembic初始化
-- [ ] 在backend目录下运行 `poetry run alembic init alembic`
-- [ ] 配置 `alembic.ini` 中的数据库连接字符串
-- [ ] 修改 `alembic/env.py` 设置target_metadata
-- [ ] 导入所有模型到 `alembic/env.py` 中
+- [x] 在backend目录下运行 `poetry run alembic init alembic`
+- [x] 配置 `alembic.ini` 中的数据库连接字符串
+- [x] 修改 `alembic/env.py` 设置target_metadata
+- [x] 导入所有模型到 `alembic/env.py` 中
 
 #### 1.2 User模型扩展
-- [ ] 在 `backend/app/models/user.py` 添加 email_verified 字段
-- [ ] 添加 is_edu_email 字段
-- [ ] 添加 verify_token 字段（预留）
-- [ ] 添加 verify_token_expires 字段（预留）
-- [ ] 添加 research_field 字段
-- [ ] 添加 failed_login_attempts 字段（预留）
-- [ ] 添加 locked_until 字段（预留）
+- [x] 在 `backend/app/models/user.py` 添加 email_verified 字段（已存在）
+- [x] 添加 is_edu_email 字段（已存在）
+- [x] 添加 verify_token 字段（预留）（已存在）
+- [x] 添加 verify_token_expires 字段（预留）（已存在）
+- [x] 添加 research_field 字段（已存在）
+- [x] 添加 failed_login_attempts 字段（预留）（已存在）
+- [x] 添加 locked_until 字段（预留）（已存在）
 
 #### 1.3 生成并执行迁移
-- [ ] 运行 `poetry run alembic revision --autogenerate -m "Initial database schema"`
-- [ ] 运行 `poetry run alembic upgrade head` 执行迁移
-- [ ] 验证数据库表创建成功
-- [ ] 验证所有字段和索引创建正确
-- [ ] 验证外键约束正常工作
+- [x] 运行 `poetry run alembic revision --autogenerate -m "Initial database schema"`
+- [x] 运行 `poetry run alembic upgrade head` 执行迁移
+- [x] 验证数据库表创建成功
+- [x] 验证所有字段和索引创建正确
+- [x] 验证外键约束正常工作
+
+**额外完成**:
+- [x] 升级Base模型到SQLAlchemy 2.0 (AsyncAttrs + DeclarativeBase)
+- [x] 使用Context7查询Alembic和SQLAlchemy 2.0最新文档
 
 ---
 
@@ -1291,6 +1295,37 @@ FRONTEND_URL=https://innoliber.com
 ---
 
 ## 📝 开发记录
+
+### 2025-11-15
+**主要成果**:
+- ✅ 完成CLAUDE.md开发工作流程规范化（新增689行）
+- ✅ 完成Phase 2.1数据库迁移配置
+- ✅ 升级Base模型到SQLAlchemy 2.0 (AsyncAttrs + DeclarativeBase)
+- ✅ 验证User和Proposal模型字段完整性
+- ✅ 生成并执行初始数据库迁移 (revision 9a6e37957675)
+- ✅ 成功创建users和proposals表及所有索引
+
+**技术亮点**:
+- 工作流程规范：引入Pre-Development Check（含Context7查询）和Post-Development文档更新流程
+- Context7集成：开发前强制查询技术文档确保最佳实践
+- ORM升级：主动从declarative_base()升级到现代DeclarativeBase + AsyncAttrs模式
+- Alembic配置：env.py已配置异步数据库URL转换，支持asyncpg驱动
+
+**验收标准达成**:
+- ✅ 数据库迁移执行无错误
+- ✅ 所有字段和索引创建正确（含email_verified、is_edu_email等预留字段）
+- ✅ User模型包含所有认证所需字段
+- ✅ 外键约束正常工作（proposals.user_id → users.id）
+
+**Context7技术文档查询记录**:
+- `/sqlalchemy/alembic`: 学习Alembic最佳实践（alembic init, autogenerate, upgrade命令）
+- `/websites/sqlalchemy_en_20`: 学习SQLAlchemy 2.0异步模式（AsyncAttrs, DeclarativeBase）
+
+**下一步计划**:
+- Phase 2.2：认证系统实现（1.5天）
+- 创建core/security.py（密码哈希、JWT生成）
+- 创建db/session.py（异步会话管理）
+- 实现认证API路由（注册、登录、获取当前用户）
 
 ### 2025-11-11
 **主要成果**:
