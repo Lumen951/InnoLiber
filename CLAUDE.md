@@ -189,12 +189,12 @@ Next phase: **Phase 2.3 - Proposal CRUD API Implementation**
 - [x] **Dashboard** - 首页/仪表板 (100% 完成)
 - [x] **LoginPage** - 登录页 (100% 完成)
 - [x] **RegisterPage** - 注册页 (100% 完成)
-- [ ] **ProposalCreatePage** - 新建标书页 (设计完成，待实现)
-- [ ] **ProposalEditPage** - 标书编辑页 (设计完成，待实现)
-- [ ] **ProposalDetailPage** - 标书详情页 (设计完成，待实现)
-- [ ] **AnalysisPage** - 数据分析页 (设计完成，待实现)
-- [ ] **LibraryPage** - 文献库页 (设计完成，待实现)
-- [ ] **SettingsPage** - 设置页 (设计完成，待实现)
+- [x] **ProposalCreatePage** - 新建标书页 (100% 完成)
+- [x] **ProposalEditPage** - 标书编辑页 (100% 完成)
+- [x] **ProposalDetailPage** - 标书详情页 (100% 完成)
+- [x] **AnalysisPage** - 数据分析页 (100% 完成)
+- [x] **LibraryPage** - 文献库页 (100% 完成)
+- [x] **SettingsPage** - 设置页 (100% 完成)
 
 ### Component Library Status
 - [x] **SidebarLayout** - 侧边栏布局组件 (100%)
