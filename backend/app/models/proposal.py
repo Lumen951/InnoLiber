@@ -95,7 +95,13 @@ class Proposal(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(500), nullable=False, index=True)  # 索引：支持快速搜索
     description = Column(Text, nullable=True)
-    content = Column(Text, nullable=True)  # 正文内容（富文本HTML）
+    content = Column(Text, nullable=True)  # 正文内容（富文本HTML，向后兼容）
+
+    # ========== 新增：结构化内容存储 ==========
+    structured_content = Column(JSON, nullable=True, comment="结构化内容 {abstract, background, objectives, etc.}")
+    word_count = Column(Integer, nullable=True, default=0, comment="总字数统计")
+    version = Column(Integer, nullable=False, default=1, comment="版本号（乐观锁）")
+    last_auto_save_at = Column(DateTime(timezone=True), nullable=True, comment="最后自动保存时间")
 
     # ========== 状态信息 ==========
     status = Column(
