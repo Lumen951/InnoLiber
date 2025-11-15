@@ -11,9 +11,11 @@
  * @version 1.0.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Row, Col, Button, Input, Select, Pagination, Empty, Spin } from 'antd';
 import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
+import { debounce } from 'lodash';
 import type { MenuProps } from 'antd';
 import SidebarLayout from '@/components/SidebarLayout';
 import ProposalCard from '@/components/ProposalCard';
@@ -43,6 +45,8 @@ const { Option } = Select;
  * @returns Dashboard 首页组件
  */
 const Dashboard: React.FC = () => {
+  const navigate = useNavigate();
+
   // 标书数据管理（来自自定义Hook）
   const {
     proposals,
@@ -64,46 +68,66 @@ const Dashboard: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState('');
 
   /**
-   * 搜索功能处理
+   * 防抖搜索功能实现
    *
-   * <todo priority="high">
-   * TODO(frontend-team, 2025-11-15): [P0] 实现搜索功能
-   * - 支持标题、研究领域、关键词搜索
-   * - 添加防抖机制（300ms），避免频繁API调用
-   * - 搜索结果高亮匹配词
-   * </todo>
+   * <rationale>
+   * 使用lodash.debounce实现：
+   * - 延迟300ms，平衡用户体验和性能
+   * - 避免每次输入都触发API请求
+   * - 支持标题、研究领域搜索
+   * </rationale>
    */
-  const handleSearch = () => {
-    // TODO: 实现搜索功能
-    console.log('搜索:', searchText);
-  };
+  const debouncedSearch = useCallback(
+    debounce((searchValue: string) => {
+      console.log('执行搜索:', searchValue);
+      handleFilterChange({
+        search: searchValue || undefined,
+        status: statusFilter || undefined,
+      });
+    }, 300),
+    [handleFilterChange, statusFilter]
+  );
+
+  /**
+   * 搜索文本变化处理
+   */
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchText(value);
+    debouncedSearch(value);
+  }, [debouncedSearch]);
+
+  /**
+   * 搜索功能处理（按回车）
+   */
+  const handleSearch = useCallback(() => {
+    debouncedSearch.cancel(); // 取消防抖，立即执行
+    handleFilterChange({
+      search: searchText || undefined,
+      status: statusFilter || undefined,
+    });
+  }, [debouncedSearch, handleFilterChange, searchText, statusFilter]);
 
   /**
    * 状态筛选处理
    * @param value - 选中的状态值
    */
-  const handleStatusFilter = (value: string) => {
+  const handleStatusFilter = useCallback((value: string) => {
     setStatusFilter(value);
     handleFilterChange({
+      search: searchText || undefined,
       status: value || undefined,
     });
-  };
+  }, [handleFilterChange, searchText]);
 
   // ========== 标书操作事件处理器 ==========
 
   /**
    * 编辑标书操作
-   *
-   * <todo priority="medium">
-   * TODO(frontend-team, 2025-11-20): [P1] 导航到编辑页面
-   * - 使用 React Router navigate('/proposals/${id}/edit')
-   * - 传递标书数据到编辑页面状态
-   * </todo>
    */
-  const handleEditProposal = (proposal: ProposalCardType) => {
-    console.log('编辑标书:', proposal.id);
-    // TODO: 导航到编辑页面
-  };
+  const handleEditProposal = useCallback((proposal: ProposalCardType) => {
+    navigate(`/proposals/${proposal.id}/edit`);
+  }, [navigate]);
 
   /**
    * 删除标书操作
@@ -148,17 +172,10 @@ const Dashboard: React.FC = () => {
 
   /**
    * 查看标书详情
-   *
-   * <todo priority="medium">
-   * TODO(frontend-team, 2025-11-20): [P1] 导航到详情页面
-   * - 只读模式展示标书内容
-   * - 显示AI分析报告和建议
-   * </todo>
    */
-  const handleViewProposal = (proposal: ProposalCardType) => {
-    console.log('查看标书:', proposal.id);
-    // TODO: 导航到详情页面
-  };
+  const handleViewProposal = useCallback((proposal: ProposalCardType) => {
+    navigate(`/proposals/${proposal.id}`);
+  }, [navigate]);
 
   return (
     <SidebarLayout>
@@ -266,7 +283,7 @@ const Dashboard: React.FC = () => {
               placeholder="搜索标书..."
               prefix={<SearchOutlined />}
               value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
+              onChange={handleSearchChange}
               onPressEnter={handleSearch}
               style={{ width: 300 }}
             />
@@ -288,7 +305,7 @@ const Dashboard: React.FC = () => {
           <Button
             type="primary"
             icon={<PlusOutlined />}
-            onClick={() => console.log('新建标书')}
+            onClick={() => navigate('/proposals/new')}
           >
             新建标书
           </Button>

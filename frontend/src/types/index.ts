@@ -152,6 +152,34 @@ export interface ProposalCard extends Proposal {
   innovationScore?: number;
 }
 
+/**
+ * 标书详细内容（编辑页面专用）
+ *
+ * <rationale>
+ * 设计目的：
+ * - 扩展Proposal接口，添加富文本内容字段
+ * - content使用JSON结构化存储，便于AI分析和处理
+ * - 支持版本管理和自动保存功能
+ * </rationale>
+ *
+ * @property {object} content - 结构化内容（HTML格式）
+ * @property {number} wordCount - 总字数统计
+ * @property {string} [lastAutoSaveAt] - 最后自动保存时间
+ */
+export interface ProposalDetail extends Proposal {
+  content: {
+    abstract: string;           // 项目摘要
+    background: string;         // 研究背景
+    objectives: string;         // 研究目标
+    methodology: string;        // 研究方法
+    timeline: string;           // 研究计划
+    budget: string;             // 预算说明
+    references: string;         // 参考文献
+  };
+  wordCount: number;            // 总字数
+  lastAutoSaveAt?: string;      // 最后自动保存时间
+}
+
 // ============================================================================
 // API 通信类型 (API Communication Types)
 // ============================================================================
