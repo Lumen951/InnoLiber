@@ -78,4 +78,5 @@ coverage/
 # 忽略打包文件
 *.tar.gz
 *.zip
-*.rar
+*.rarbackend/app/__pycache__/
+backend/alembic/versions/__pycache__/
