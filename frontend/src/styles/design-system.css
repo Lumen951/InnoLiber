@@ -1,0 +1,212 @@
+/**
+ * InnoLiber Design System - Rams Edition v2.0
+ * 基于 Dieter Rams "Less but Better" 设计哲学
+ *
+ * 设计原则：
+ * 1. 统一的视觉语言
+ * 2. 8px 栅格系统
+ * 3. 群青色主色调
+ * 4. 克制的功能色使用
+ */
+
+:root {
+  /* ==================== Color System ==================== */
+
+  /* 主色调 - 群青色系 (Ultramarine Blue) */
+  --color-primary: #0437F2;           /* 主色 - 按钮、链接、强调 */
+  --color-primary-deep: #002B8C;      /* 深蓝 - 标题、重要文字 */
+  --color-primary-light: #E6F0FF;     /* 浅蓝 - 背景、选中态 */
+  --color-primary-hover: #0330CC;     /* 悬停态 */
+  --color-primary-active: #022199;    /* 激活态 */
+
+  /* 功能色（克制使用） */
+  --color-success: #059669;           /* 成功 - 森林绿（降低饱和度） */
+  --color-success-light: #D1FAE5;     /* 成功浅色 */
+  --color-warning: #D97706;           /* 警告 - 琥珀色（降低饱和度） */
+  --color-warning-light: #FEF3C7;     /* 警告浅色 */
+  --color-error: #DC2626;             /* 错误 - 深红（降低饱和度） */
+  --color-error-light: #FEE2E2;       /* 错误浅色 */
+  --color-info: #0437F2;              /* 信息 - 使用主色 */
+  --color-info-light: #E6F0FF;        /* 信息浅色 */
+
+  /* 中性色 */
+  --color-text-primary: #171717;      /* 主要文字 */
+  --color-text-secondary: #525252;    /* 次要文字 */
+  --color-text-tertiary: #737373;     /* 辅助文字 */
+  --color-text-disabled: #D4D4D4;     /* 禁用文字 */
+
+  --color-background: #FAFAFA;        /* 页面背景 - 极浅灰 */
+  --color-background-elevated: #FFFFFF; /* 卡片背景 - 白色 */
+  --color-background-hover: #F5F5F5;  /* 悬停背景 */
+
+  --color-border: #E5E5E5;            /* 默认边框 */
+  --color-border-dark: #D4D4D4;       /* 深色边框 */
+  --color-border-light: #F5F5F5;      /* 浅色边框 */
+
+  /* ==================== Spacing System (8px Grid) ==================== */
+
+  --spacing-xs: 4px;    /* 极小间距 */
+  --spacing-sm: 8px;    /* 小间距 */
+  --spacing-md: 16px;   /* 中等间距 */
+  --spacing-lg: 24px;   /* 大间距 */
+  --spacing-xl: 32px;   /* 超大间距 */
+  --spacing-2xl: 48px;  /* 2倍超大间距 */
+  --spacing-3xl: 64px;  /* 3倍超大间距 */
+
+  /* ==================== Typography ==================== */
+
+  /* 字体家族 */
+  --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+                      "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+                      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+                      "Noto Color Emoji";
+  --font-family-mono: "SF Mono", Monaco, Consolas, "Liberation Mono",
+                      "Courier New", monospace;
+
+  /* 字体大小 */
+  --font-size-xs: 12px;   /* 极小文字 */
+  --font-size-sm: 14px;   /* 小文字 */
+  --font-size-base: 16px; /* 基础文字 */
+  --font-size-lg: 18px;   /* 大文字 */
+  --font-size-xl: 20px;   /* 超大文字 */
+  --font-size-2xl: 24px;  /* 标题 */
+  --font-size-3xl: 30px;  /* 大标题 */
+  --font-size-4xl: 36px;  /* 超大标题 */
+
+  /* 字重 */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* 行高 */
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* ==================== Border Radius (统一 4px) ==================== */
+
+  --radius-sm: 2px;   /* 小圆角 - 极少使用 */
+  --radius-base: 4px; /* 基础圆角 - 所有组件默认 */
+  --radius-lg: 8px;   /* 大圆角 - Modal、Drawer */
+  --radius-full: 9999px; /* 完全圆角 - Avatar、Badge */
+
+  /* ==================== Border Width ==================== */
+
+  --border-width-thin: 1px;   /* 标准边框 */
+  --border-width-medium: 2px; /* 强调边框 */
+  --border-width-thick: 4px;  /* 粗边框 - Progress */
+
+  /* ==================== Shadow (最小化使用) ==================== */
+
+  --shadow-none: none;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);     /* 极浅阴影 - 极少使用 */
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);   /* Modal、Dropdown */
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1); /* Drawer */
+
+  /* ==================== Transition (统一 0.2s ease) ==================== */
+
+  --transition-fast: 0.1s ease;
+  --transition-base: 0.2s ease;  /* 默认过渡 */
+  --transition-slow: 0.3s ease;
+
+  /* ==================== Z-Index System ==================== */
+
+  --z-index-dropdown: 1000;
+  --z-index-sticky: 1020;
+  --z-index-fixed: 1030;
+  --z-index-modal-backdrop: 1040;
+  --z-index-modal: 1050;
+  --z-index-popover: 1060;
+  --z-index-tooltip: 1070;
+
+  /* ==================== Component Specific ==================== */
+
+  /* Button */
+  --button-height: 40px;
+  --button-padding-x: var(--spacing-md);
+  --button-padding-y: var(--spacing-sm);
+
+  /* Input */
+  --input-height: 40px;
+  --input-padding-x: var(--spacing-md);
+  --input-padding-y: var(--spacing-sm);
+
+  /* Card */
+  --card-padding: var(--spacing-lg);
+  --card-border-width: var(--border-width-thin);
+  --card-border-color: var(--color-border);
+
+  /* Icon */
+  --icon-size-sm: 16px;
+  --icon-size-base: 20px;
+  --icon-size-lg: 24px;
+  --icon-stroke-width: 2px;
+  --icon-stroke-width-bold: 2.5px;
+}
+
+/* ==================== Global Resets (Rams Style) ==================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==================== Utility Classes ==================== */
+
+/* 间距工具类 */
+.mt-xs { margin-top: var(--spacing-xs); }
+.mt-sm { margin-top: var(--spacing-sm); }
+.mt-md { margin-top: var(--spacing-md); }
+.mt-lg { margin-top: var(--spacing-lg); }
+.mt-xl { margin-top: var(--spacing-xl); }
+
+.mb-xs { margin-bottom: var(--spacing-xs); }
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+.mb-xl { margin-bottom: var(--spacing-xl); }
+
+.p-xs { padding: var(--spacing-xs); }
+.p-sm { padding: var(--spacing-sm); }
+.p-md { padding: var(--spacing-md); }
+.p-lg { padding: var(--spacing-lg); }
+.p-xl { padding: var(--spacing-xl); }
+
+/* 文字工具类 */
+.text-primary { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-tertiary { color: var(--color-text-tertiary); }
+
+.font-medium { font-weight: var(--font-weight-medium); }
+.font-semibold { font-weight: var(--font-weight-semibold); }
+.font-bold { font-weight: var(--font-weight-bold); }
+
+/* 边框工具类 */
+.border-thin { border-width: var(--border-width-thin); }
+.border-base { border: var(--border-width-thin) solid var(--color-border); }
+.rounded-base { border-radius: var(--radius-base); }
+
+/* 过渡工具类 */
+.transition-base { transition: all var(--transition-base); }
+.transition-border { transition: border-color var(--transition-base); }
+.transition-color { transition: color var(--transition-base); }
+
+/* ==================== Print Styles ==================== */
+
+@media print {
+  body {
+    background-color: white;
+  }
+}

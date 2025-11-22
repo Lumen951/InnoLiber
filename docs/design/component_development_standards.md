@@ -1,9 +1,111 @@
 # InnoLiber 组件开发规范
 
-**版本**: v1.0
+**版本**: v2.0 - Rams Edition
 **创建日期**: 2025-10-30
+**更新日期**: 2025-11-22
 **适用项目**: InnoLiber Frontend
 **技术栈**: React 18 + TypeScript 5 + Ant Design 5
+**设计理念**: Dieter Rams - Less but Better
+
+---
+
+## 🎨 Rams 风格组件规范（新增）
+
+### 核心设计原则
+
+基于 Dieter Rams 设计十诫，我们为组件制定以下规范：
+
+#### 1. 视觉规范
+
+**配色**:
+```typescript
+// 使用 CSS 变量
+const colors = {
+  primary: 'var(--color-primary)',      // #0437F2
+  border: 'var(--color-border)',        // #E5E5E5
+  text: 'var(--color-text-primary)',    // #171717
+};
+```
+
+**尺寸规范**:
+- 圆角: 4px（统一）
+- 边框: 1px（统一）
+- 间距: 8px 的倍数（8, 16, 24, 32）
+- 按钮高度: 40px
+- 输入框高度: 40px
+
+**图标**:
+- 使用 Lucide Icons（不再使用 Ant Design Icons 或 emoji）
+- 默认尺寸: 20px
+- 默认线宽: 2px
+- 默认颜色: #737373，激活状态: #0437F2
+
+#### 2. 组件简化指南
+
+**按钮组件（Button）**:
+```typescript
+// ❌ 旧版：5种样式
+type ButtonType = 'primary' | 'default' | 'dashed' | 'link' | 'text';
+
+// ✅ Rams Edition：3种样式
+type RamsButtonType = 'primary' | 'secondary' | 'text';
+```
+
+**卡片组件（Card）**:
+```css
+/* ❌ 旧版：使用阴影 */
+.card {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* ✅ Rams Edition：使用边框 */
+.card {
+  border: 1px solid #E5E5E5;
+  box-shadow: none;
+}
+
+.card:hover {
+  border-color: #0437F2;  /* 悬停时边框变主色 */
+}
+```
+
+**标签组件（Tag）**:
+```css
+/* ❌ 旧版：彩色背景 */
+.tag-success {
+  background: #10B981;
+  color: white;
+}
+
+/* ✅ Rams Edition：细边框 + 对应颜色文字 */
+.tag-success {
+  border: 1px solid #059669;
+  background: transparent;
+  color: #059669;
+}
+```
+
+#### 3. 组件命名约定
+
+- **Rams风格组件**: 以 `Rams` 开头，如 `RamsButton`, `RamsCard`
+- **普通组件**: 保持原有命名，如 `ProposalCard`, `StatusTag`
+
+#### 4. 动画规范
+
+```typescript
+// 统一过渡动画
+const transition = '0.2s ease';
+
+// 使用示例
+const styles = {
+  button: {
+    transition: 'all 0.2s ease',
+  },
+  card: {
+    transition: 'border-color 0.2s ease',
+  },
+};
+```
 
 ---
 

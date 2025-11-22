@@ -140,8 +140,8 @@ Key environment variables:
 
 ## Development Status
 
-Current phase: **Phase 2 - Backend API Implementation (30% Complete)**
-Next phase: **Phase 2.3 - Proposal CRUD API Implementation**
+Current phase: **Phase 1.5 - Rams Design System Redesign (Phase 1.5.1 完成)**
+Next phase: **Phase 1.5.2 - Core Components (Button, Card, Input, Tag, Progress)**
 
 **Phase 0 Completed** ✅ (2025-10-29):
 - ✅ Technical documentation
@@ -161,16 +161,33 @@ Next phase: **Phase 2.3 - Proposal CRUD API Implementation**
 - ✅ Deployment documentation (docs/technical/04_dockerfile_implementation_plan.md, 05_docker_deployment_guide.md)
 - ⏳ Full integration testing
 
-**Phase 1 Completed** ✅ (60% Complete):
+**Phase 1 Completed** ✅ (100% Complete):
 - ✅ LoginPage - 登录页 (100%)
 - ✅ RegisterPage - 注册页 (100%)
 - ✅ Dashboard - 首页/仪表板 (100%)
 - ✅ ProposalCreatePage - 新建标书页 (100%)
-- ⏳ ProposalEditPage - 标书编辑页
-- ⏳ ProposalDetailPage - 标书详情页
-- ⏳ AnalysisPage - 数据分析页
-- ⏳ LibraryPage - 文献库页
-- ⏳ SettingsPage - 设置页
+- ✅ ProposalEditPage - 标书编辑页 (100%)
+- ✅ ProposalDetailPage - 标书详情页 (100%)
+- ✅ AnalysisPage - 数据分析页 (100%)
+- ✅ LibraryPage - 文献库页 (100%)
+- ✅ SettingsPage - 设置页 (100%)
+
+**Phase 1.5 Rams Design System Redesign** 🔄 (20% Complete):
+- ✅ Phase 1.5.0 - 文档整合与更新 (100%) - 2025-11-22
+  - ✅ 合并设计文档到 frontend_pages_complete.md
+  - ✅ 归档历史文档 (frontend_prototypes.md, icon_requirements.md)
+  - ✅ 更新开发计划文档
+- ✅ Phase 1.5.1 - Foundation Setup (100%) - 2025-11-22
+  - ✅ 安装 lucide-react 依赖
+  - ✅ 创建 CSS 变量系统 (design-system.css)
+  - ✅ 配置 Ant Design 主题 (theme.ts)
+  - ✅ 创建图标映射系统 (icons/index.tsx)
+  - ✅ 更新 main.tsx 导入设计系统
+  - ✅ 修复 TypeScript 类型错误
+- ⏳ Phase 1.5.2 - Core Components (0%)
+- ⏳ Phase 1.5.3 - Page Components (0%)
+- ⏳ Phase 1.5.4 - Polish (0%)
+- ⏳ Phase 1.5.5 - Verification (0%)
 
 **Phase 2 In Progress** 🔄 (30% Complete):
 - ✅ Phase 2.1 - 数据库迁移配置 (100%) - 2025-11-15
